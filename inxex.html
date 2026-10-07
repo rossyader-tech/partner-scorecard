@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partner Evaluation Scorecard — Affiliate Program</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';</script>
+<style>
+  :root {
+    --navy: #0d1b2a; --navy-mid: #162437; --navy-light: #1e3250;
+    --gold: #c9a84c; --gold-light: #e4c97a; --gold-dim: #7a6230;
+    --green: #2ecc8a; --red: #e05c5c; --amber: #e09a3a;
+    --text: #d8e4f0; --text-dim: #7a90a8;
+    --border: rgba(201,168,76,0.18); --card: rgba(22,36,55,0.85);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--navy); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content:''; position:fixed; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%); pointer-events:none; }
+  body::after  { content:''; position:fixed; bottom:-200px; left:-100px; width:500px; height:500px; background:radial-gradient(circle,rgba(46,204,138,0.04) 0%,transparent 70%); pointer-events:none; }
+  .grid-bg { position:fixed; inset:0; background-image:linear-gradient(rgba(201,168,76,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(201,168,76,0.03) 1px,transparent 1px); background-size:40px 40px; pointer-events:none; }
+  .container { max-width:860px; margin:0 auto; padding:48px 24px 80px; position:relative; z-index:1; }
+  header { margin-bottom:48px; border-bottom:1px solid var(--border); padding-bottom:32px; }
+  .eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  h1 { font-family:'DM Serif Display',serif; font-size:clamp(28px,4vw,42px); color:#fff; line-height:1.15; margin-bottom:12px; }
+  h1 em { font-style:italic; color:var(--gold-light); }
+  .subtitle { color:var(--text-dim); font-size:14px; line-height:1.6; max-width:560px; }
+  .form-grid { display:grid; gap:32px; }
+  .section-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+  .section-label::after { content:''; flex:1; height:1px; background:var(--border); }
+  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:28px; backdrop-filter:blur(8px); }
+  .field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+  .field-row.full { grid-template-columns:1fr; }
+  .field-row.three { grid-template-columns:1fr 1fr 1fr; }
+  label { display:block; font-size:12px; font-weight:500; color:var(--text-dim); margin-bottom:6px; letter-spacing:0.04em; }
+  input[type="text"], input[type="number"], select, textarea { width:100%; background:rgba(13,27,42,0.8); border:1px solid rgba(201,168,76,0.2); border-radius:7px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px; padding:10px 14px; transition:border-color 0.2s,box-shadow 0.2s; outline:none; }
+  input:focus, select:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(201,168,76,0.1); }
+  select option { background:var(--navy-mid); }
+  textarea { resize:vertical; min-height:80px; line-height:1.5; }
+  input::placeholder, textarea::placeholder { color:rgba(120,144,168,0.5); }
+  .radio-group { display:flex; flex-wrap:wrap; gap:8px; }
+  .radio-pill input { display:none; }
+  .radio-pill span, .radio-pill label:not(.radio-pill) { display:inline-block; padding:7px 16px; background:rgba(13,27,42,0.6); border:1px solid rgba(201,168,76,0.2); border-radius:100px; cursor:pointer; font-size:13px; color:var(--text-dim); transition:all 0.15s; margin:0; letter-spacing:0; }
+  .radio-pill { display:inline-block; cursor:pointer; }
+  .radio-pill input:checked ~ span, .radio-pill input:checked + span { background:rgba(201,168,76,0.15); border-color:var(--gold); color:var(--gold-light); }
+  .radio-pill:hover span { border-color:rgba(201,168,76,0.5); color:var(--text); }
+  .range-wrapper { display:flex; align-items:center; gap:12px; }
+  input[type="range"] { flex:1; appearance:none; background:rgba(201,168,76,0.15); height:4px; border-radius:2px; border:none; outline:none; padding:0; cursor:pointer; }
+  input[type="range"]::-webkit-slider-thumb { appearance:none; width:16px; height:16px; background:var(--gold); border-radius:50%; cursor:pointer; }
+  .range-val { font-family:'DM Mono',monospace; font-size:13px; color:var(--gold); min-width:36px; text-align:right; }
+  .hint { font-size:11px; color:var(--text-dim); margin-top:5px; opacity:0.7; }
+  .score-btn { display:block; width:100%; padding:16px; background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%); color:var(--navy); font-family:'DM Sans',sans-serif; font-weight:600; font-size:15px; border:none; border-radius:10px; cursor:pointer; letter-spacing:0.04em; transition:opacity 0.2s,transform 0.1s; margin-top:8px; }
+  .score-btn:hover { opacity:0.92; transform:translateY(-1px); }
+  #results { display:none; margin-top:40px; animation:fadeUp 0.4s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .verdict-banner { border-radius:12px; padding:28px 32px; margin-bottom:28px; display:flex; align-items:center; gap:24px; border:1px solid; }
+  .verdict-banner.go   { background:rgba(46,204,138,0.08);  border-color:rgba(46,204,138,0.3); }
+  .verdict-banner.soft { background:rgba(224,154,58,0.08);  border-color:rgba(224,154,58,0.3); }
+  .verdict-banner.pass { background:rgba(224,92,92,0.08);   border-color:rgba(224,92,92,0.3); }
+  .verdict-icon { font-size:40px; flex-shrink:0; }
+  .verdict-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:4px; }
+  .verdict-banner.go   .verdict-label { color:var(--green); }
+  .verdict-banner.soft .verdict-label { color:var(--amber); }
+  .verdict-banner.pass .verdict-label { color:var(--red); }
+  .verdict-title   { font-family:'DM Serif Display',serif; font-size:22px; color:#fff; margin-bottom:6px; }
+  .verdict-summary { font-size:13px; color:var(--text-dim); line-height:1.6; }
+  .scores-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px; }
+  .score-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:20px 24px; }
+  .score-card-label { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; }
+  .score-number { font-family:'DM Serif Display',serif; font-size:48px; line-height:1; margin-bottom:6px; }
+  .score-bar-track { height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; margin-bottom:8px; }
+  .score-bar-fill { height:100%; border-radius:2px; transition:width 0.8s ease; }
+  .score-desc { font-size:12px; color:var(--text-dim); line-height:1.5; }
+  .projections-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
+  .proj-card { background:rgba(13,27,42,0.6); border:1px solid var(--border); border-radius:8px; padding:16px; text-align:center; }
+  .proj-val   { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; color:#fff; margin-bottom:2px; }
+  .proj-label { font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.1em; }
+  .proj-range { font-size:10px; color:var(--text-dim); opacity:0.6; margin-top:2px; font-family:'DM Mono',monospace; }
+  .flags-section { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px 24px; margin-bottom:24px; }
+  .flags-title { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--text-dim); margin-bottom:14px; }
+  .flag-item { display:flex; align-items:flex-start; gap:10px; margin-bottom:10px; font-size:13px; line-height:1.5; }
+  .flag-item:last-child { margin-bottom:0; }
+  .flag-dot { width:8px; height:8px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+  .flag-dot.green { background:var(--green); }
+  .flag-dot.amber { background:var(--amber); }
+  .flag-dot.red   { background:var(--red); }
+  .conditions-box { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.2); border-radius:8px; padding:16px 20px; font-size:13px; color:var(--text-dim); line-height:1.6; }
+  .conditions-box strong { color:var(--gold-light); display:block; margin-bottom:8px; font-size:12px; letter-spacing:0.05em; }
+  .reset-btn { display:block; width:100%; padding:12px; background:transparent; color:var(--text-dim); font-family:'DM Sans',sans-serif; font-size:13px; border:1px solid rgba(255,255,255,0.1); border-radius:8px; cursor:pointer; margin-top:16px; transition:all 0.15s; }
+  .reset-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.2); }
+  @media (max-width:600px) { .field-row,.field-row.three,.scores-row,.projections-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="container">
+
+<header>
+  <div class="eyebrow">Your Brand · Affiliate Channel</div>
+  <h1>Partner Evaluation<br><em>Scorecard</em></h1>
+  <p class="subtitle">Assess a prospective affiliate on two dimensions: <strong style="color:var(--text)">Scale potential</strong> and <strong style="color:var(--text)">Pay Rate likelihood</strong>. Channel benchmark: 40% pay rate.</p>
+</header>
+
+<!-- ── Known Partners Quick-Load ─────────────────────────────────── -->
+<div style="margin-bottom:24px;">
+  <div class="section-label">Known Partners <span style="font-family:'DM Sans',sans-serif;text-transform:none;letter-spacing:0;font-size:11px;color:var(--text-dim);margin-left:4px;">— load a benchmark partner to pre-fill the scorecard</span></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px 24px;">
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:16px;line-height:1.6;">These are your 5 validated partners from Jan 2026 SimilarWeb data. Loading one pre-fills all measurable fields. Review the qualitative fields before scoring.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;">
+
+      <button onclick="loadKnownPartner('harborview')" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.3);border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.15s;" onmouseover="this.style.background='rgba(46,204,138,0.15)'" onmouseout="this.style.background='rgba(46,204,138,0.08)'">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">✅ GO · Loan Decline</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;">Harborview Loans</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">5.1M visits · DA ~82</div>
+      </button>
+
+      <button onclick="loadKnownPartner('beaconreviews')" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.3);border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.15s;" onmouseover="this.style.background='rgba(46,204,138,0.15)'" onmouseout="this.style.background='rgba(46,204,138,0.08)'">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">✅ GO · SEM Rankings</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;">Beacon Reviews</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">881K visits · DA ~62</div>
+      </button>
+
+      <button onclick="loadKnownPartner('ledgernest')" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.3);border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.15s;" onmouseover="this.style.background='rgba(46,204,138,0.15)'" onmouseout="this.style.background='rgba(46,204,138,0.08)'">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">✅ GO · App</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;">Ledger Nest</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">3.6M visits · DA ~82</div>
+      </button>
+
+      <button onclick="loadKnownPartner('dollardispatch')" style="background:rgba(46,204,138,0.08);border:1px solid rgba(46,204,138,0.3);border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.15s;" onmouseover="this.style.background='rgba(46,204,138,0.15)'" onmouseout="this.style.background='rgba(46,204,138,0.08)'">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--green);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">✅ GO · Publisher Email</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;">Dollar Dispatch</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">1.1M visits · DA ~68</div>
+      </button>
+
+      <button onclick="loadKnownPartner('pennycompass')" style="background:rgba(224,154,58,0.08);border:1px solid rgba(224,154,58,0.3);border-radius:8px;padding:12px;cursor:pointer;text-align:left;transition:all 0.15s;" onmouseover="this.style.background='rgba(224,154,58,0.15)'" onmouseout="this.style.background='rgba(224,154,58,0.08)'">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--amber);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:4px;">⚠ Watchlist · SEO</div>
+        <div style="font-size:13px;color:#fff;font-weight:600;">Penny Compass</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">349K visits · DA ~42</div>
+      </button>
+
+    </div>
+    <div id="knownPartnerNote" style="display:none;margin-top:14px;padding:10px 14px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:6px;font-size:12px;color:var(--gold-light);line-height:1.5;"></div>
+  </div>
+</div>
+
+<div id="swPanel" style="margin-bottom:32px;">
+  <div class="section-label">SimilarWeb Import <span style="font-family:'DM Sans',sans-serif;text-transform:none;letter-spacing:0;font-size:11px;color:var(--text-dim);margin-left:4px;">— upload your SimilarWeb PDF to auto-fill</span></div>
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+
+    <!-- PDF Upload Zone -->
+    <div id="swUploadZone" style="padding:32px 28px;">
+      <div id="swDropArea" onclick="document.getElementById('swPdfInput').click()"
+           style="border:2px dashed rgba(201,168,76,0.35);border-radius:10px;padding:36px 24px;text-align:center;cursor:pointer;transition:all 0.2s;"
+           ondragover="event.preventDefault();this.style.borderColor='var(--gold)';this.style.background='rgba(201,168,76,0.06)'"
+           ondragleave="this.style.borderColor='rgba(201,168,76,0.35)';this.style.background=''"
+           ondrop="event.preventDefault();this.style.borderColor='rgba(201,168,76,0.35)';this.style.background='';handlePdfDrop(event)">
+        <div style="font-size:28px;margin-bottom:10px;">📄</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:6px;">Upload SimilarWeb PDF</div>
+        <div style="font-size:13px;color:var(--text-dim);margin-bottom:18px;line-height:1.5;">Export the report from SimilarWeb (free tier works) and drop it here.<br>Fields will auto-populate — review and adjust before scoring.</div>
+        <div style="display:inline-block;padding:10px 24px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:6px;color:var(--gold);font-size:13px;font-weight:500;">Choose PDF file</div>
+        <input type="file" id="swPdfInput" accept=".pdf" style="display:none;" onchange="handlePdfFile(this.files[0])">
+      </div>
+      <div style="margin-top:14px;text-align:center;">
+        <button onclick="toggleManualEntry()" style="background:none;border:none;color:var(--text-dim);font-size:12px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;">Enter data manually instead</button>
+      </div>
+    </div>
+
+    <!-- PDF Parsing Status -->
+    <div id="swParsingStatus" style="display:none;padding:24px 28px;text-align:center;">
+      <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:0.1em;">⟳ READING PDF...</div>
+    </div>
+
+    <!-- Parsed Preview — shown after PDF read -->
+    <div id="swParsedPreview" style="display:none;padding:24px 28px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--green);margin-bottom:4px;">✓ PDF PARSED</div>
+          <div style="font-size:13px;color:var(--text-dim);">Review the extracted fields below. Edit anything that looks off, then click <strong style="color:var(--text)">Apply to Scorecard</strong>.</div>
+        </div>
+        <button onclick="resetUploadZone()" style="padding:7px 14px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:6px;color:var(--text-dim);font-size:12px;cursor:pointer;white-space:nowrap;">↺ Re-upload</button>
+      </div>
+
+      <!-- Parsed fields grid -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">A</span> Monthly Visits</label>
+          <input type="text" id="sw_visits" placeholder="e.g. 2.3M or 450K" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          <p id="sw_visits_src" style="font-size:10px;color:var(--text-dim);margin-top:3px;opacity:0.7;"></p>
+        </div>
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">B</span> Global Rank</label>
+          <input type="text" id="sw_rank" placeholder="e.g. 4821" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          <p id="sw_rank_src" style="font-size:10px;color:var(--text-dim);margin-top:3px;opacity:0.7;"></p>
+        </div>
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">C</span> Traffic Trend</label>
+          <select id="sw_trend" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+            <option value="">— Select —</option>
+            <option value="growing_fast">📈 Growing fast</option>
+            <option value="growing">↗ Growing gradually</option>
+            <option value="flat">➡ Flat / stable</option>
+            <option value="declining">📉 Declining</option>
+          </select>
+          <p id="sw_trend_src" style="font-size:10px;color:var(--text-dim);margin-top:3px;opacity:0.7;"></p>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:20px;">
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">D</span> US Traffic %</label>
+          <input type="text" id="sw_us" placeholder="e.g. 82%" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          <p id="sw_us_src" style="font-size:10px;color:var(--text-dim);margin-top:3px;opacity:0.7;"></p>
+        </div>
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">E</span> Top Channel</label>
+          <select id="sw_ref_industry" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+            <option value="">— Select —</option>
+            <option value="finance">Finance & Banking / Credit</option>
+            <option value="personal_finance">Personal Finance / Investment</option>
+            <option value="news_media">News and Media</option>
+            <option value="tech">Computers, Electronics & Technology</option>
+            <option value="shopping">Shopping & E-commerce</option>
+            <option value="lifestyle">Lifestyle / Food / Travel</option>
+            <option value="other">Other</option>
+          </select>
+          <p id="sw_ref_src" style="font-size:10px;color:var(--text-dim);margin-top:3px;opacity:0.7;"></p>
+        </div>
+        <div>
+          <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">F</span> Finance in Top Outgoing?</label>
+          <select id="sw_outgoing" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+            <option value="">— Select —</option>
+            <option value="credit_repair">Yes — credit repair brands</option>
+            <option value="fintech">Yes — fintech / personal finance</option>
+            <option value="general_finance">Yes — general finance (banks, loans)</option>
+            <option value="none">No finance destinations visible</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Keywords — optional -->
+      <div style="background:rgba(13,27,42,0.4);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Traffic Type <span style="color:var(--gold-dim);font-family:'DM Sans',sans-serif;text-transform:none;letter-spacing:0;font-size:11px;margin-left:6px;">— inferred from channel mix · adjust if needed</span></div>
+        <p id="sw_traffictype_src" style="font-size:10px;color:var(--green);margin-bottom:10px;opacity:0.9;"></p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="publisher_email"><span>Publisher Email</span></label>
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="network_email"><span>Network Email</span></label>
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="sem_rankings"><span>SEM Rankings</span></label>
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="seo_rankings"><span>SEO Rankings</span></label>
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="loan_decline"><span>Loan Decline</span></label>
+          <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="other"><span>Other</span></label>
+        </div>
+      </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">G</span> Credit Keywords in Top 15?</label>
+            <select id="sw_creditkw" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+              <option value="">— Skip for now —</option>
+              <option value="many">Multiple credit repair terms in top 10</option>
+              <option value="some">A few general credit terms</option>
+              <option value="few">1–2 generic credit mentions</option>
+              <option value="none">No credit keywords visible</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">H</span> Keyword Intent</label>
+            <select id="sw_intent" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+              <option value="">— Skip for now —</option>
+              <option value="4">Solution-seeking ("best credit repair service")</option>
+              <option value="3">Comparison shopping ("credit repair vs")</option>
+              <option value="2">Informational ("how to improve credit score")</option>
+              <option value="1">Awareness / generic ("credit", "finance tips")</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keywords — optional -->
+      <div style="background:rgba(13,27,42,0.4);border:1px solid var(--border);border-radius:8px;padding:16px 18px;margin-bottom:20px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Keywords <span style="color:var(--gold-dim);font-family:'DM Sans',sans-serif;text-transform:none;letter-spacing:0;font-size:11px;margin-left:6px;">— optional · requires paid SimilarWeb</span></div>
+      <div id="swUnparsedNote" style="display:none;margin-bottom:16px;padding:10px 14px;background:rgba(224,154,58,0.08);border:1px solid rgba(224,154,58,0.3);border-radius:6px;font-size:12px;color:var(--amber);line-height:1.5;"></div>
+
+      <button onclick="importSimilarWeb()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.04em;">Apply to Scorecard →</button>
+    </div>
+
+    <!-- Manual Entry (collapsed by default) -->
+    <div id="swManualEntry" style="display:none;border-top:1px solid var(--border);">
+      <div style="padding:16px 28px;background:rgba(13,27,42,0.3);display:flex;align-items:center;justify-content:space-between;">
+        <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);">Manual Entry</span>
+        <button onclick="toggleManualEntry()" style="background:none;border:none;color:var(--text-dim);font-size:12px;cursor:pointer;">✕ Close</button>
+      </div>
+      <div style="padding:24px 28px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px;">
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">A</span> Monthly Visits</label>
+            <input type="text" id="sw_visits_m" placeholder="e.g. 2.3M or 450K" oninput="document.getElementById('sw_visits').value=this.value" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">B</span> Global Rank</label>
+            <input type="text" id="sw_rank_m" placeholder="e.g. 4821" oninput="document.getElementById('sw_rank').value=this.value" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">C</span> Traffic Trend</label>
+            <select id="sw_trend_m" onchange="document.getElementById('sw_trend').value=this.value" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+              <option value="">— Select —</option>
+              <option value="growing_fast">📈 Growing fast</option>
+              <option value="growing">↗ Growing gradually</option>
+              <option value="flat">➡ Flat / stable</option>
+              <option value="declining">📉 Declining</option>
+            </select>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">D</span> US Traffic %</label>
+            <input type="text" id="sw_us_m" placeholder="e.g. 82%" oninput="document.getElementById('sw_us').value=this.value" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;padding:10px 14px;outline:none;">
+          </div>
+          <div>
+            <label style="display:flex;align-items:center;gap:6px;margin-bottom:6px;"><span style="background:var(--gold);color:var(--navy);font-family:'DM Mono',monospace;font-size:10px;font-weight:600;padding:1px 7px;border-radius:3px;">E</span> Top Channel / Industry</label>
+            <select id="sw_ref_industry_m" onchange="document.getElementById('sw_ref_industry').value=this.value" style="width:100%;background:rgba(13,27,42,0.8);border:1px solid rgba(201,168,76,0.2);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;">
+              <option value="">— Select —</option>
+              <option value="finance">Finance & Banking / Credit</option>
+              <option value="personal_finance">Personal Finance / Investment</option>
+              <option value="news_media">News and Media</option>
+              <option value="tech">Computers, Electronics & Technology</option>
+              <option value="shopping">Shopping & E-commerce</option>
+              <option value="lifestyle">Lifestyle / Food / Travel</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="importSimilarWeb()" style="width:100%;padding:14px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;border:none;border-radius:8px;cursor:pointer;letter-spacing:0.04em;">Apply to Scorecard →</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAIN FORM -->
+<div class="form-grid" id="scoreForm">
+
+  <!-- 01 Partner Identity -->
+  <div>
+    <div class="section-label">01 · Partner Identity</div>
+    <div class="card">
+      <div class="field-row">
+        <div>
+          <label>Partner / Site Name</label>
+          <input type="text" id="partnerName" placeholder="e.g. examplepublisher.com">
+        </div>
+        <div>
+          <label>Primary Domain</label>
+          <input type="text" id="domain" placeholder="e.g. sitename.com">
+        </div>
+      </div>
+      <div class="field-row full">
+        <div>
+          <label>Traffic Type <span style="color:var(--gold);font-size:11px;margin-left:6px;">— select all that apply · drives LP recommendation & funnel benchmarks</span></label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="publisher_email"><span>Publisher Email</span></label>
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="network_email"><span>Network Email</span></label>
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="sem_rankings"><span>SEM Rankings</span></label>
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="seo_rankings"><span>SEO Rankings</span></label>
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="loan_decline"><span>Loan Decline</span></label>
+            <label class="radio-pill"><input type="checkbox" class="trafficTypeCheck" value="other"><span>Other</span></label>
+          </div>
+          <p class="hint">Select all traffic types this partner sends. Primary type drives LP recommendation.</p>
+        </div>
+      </div>
+      <div id="lpPreviewCard" style="display:none;margin-top:18px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:16px 18px;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:10px;">Recommended LP · Based on your L90 data</div>
+        <div id="lpPreviewContent"></div>
+      </div>
+      <div class="field-row full" style="margin-top:16px;">
+        <div>
+          <label>Site Type</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="siteType" value="comparison_review"><span>Comparison / Review</span></label>
+            <label class="radio-pill"><input type="radio" name="siteType" value="credit_specific"><span>Credit Repair Specific</span></label>
+            <label class="radio-pill"><input type="radio" name="siteType" value="personal_finance_broad"><span>Broad Personal Finance</span></label>
+            <label class="radio-pill"><input type="radio" name="siteType" value="email_newsletter"><span>Email Newsletter</span></label>
+            <label class="radio-pill"><input type="radio" name="siteType" value="coupon_deals"><span>Coupon / Deals</span></label>
+            <label class="radio-pill"><input type="radio" name="siteType" value="news_general"><span>General News / Lifestyle</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 Traffic & Scale -->
+  <div>
+    <div class="section-label">02 · Traffic & Scale Signals</div>
+    <div class="card">
+      <div class="field-row three">
+        <div>
+          <label>Monthly Organic Visits</label>
+          <input type="number" id="monthlyVisits" placeholder="e.g. 250000">
+          <p class="hint">From SimilarWeb Overview</p>
+        </div>
+        <div>
+          <label>Domain Authority / Rating</label>
+          <input type="number" id="domainAuth" min="0" max="100" placeholder="0–100">
+          <p class="hint">Estimated from SimilarWeb Rank</p>
+        </div>
+        <div>
+          <label>Organic Traffic Trend</label>
+          <select id="trafficTrend">
+            <option value="">— Select —</option>
+            <option value="growing_fast">Growing fast (&gt;20%/yr)</option>
+            <option value="growing">Growing (5–20%/yr)</option>
+            <option value="flat">Flat (±5%/yr)</option>
+            <option value="declining">Declining</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Estimated Credit-Related Keywords</label>
+          <input type="number" id="creditKeywords" placeholder="e.g. 1200">
+          <p class="hint">From SimilarWeb Keywords tab</p>
+        </div>
+        <div>
+          <label>% Traffic from Financial Topics</label>
+          <div class="range-wrapper">
+            <input type="range" id="financePercent" min="0" max="100" value="25" oninput="document.getElementById('financePercentVal').textContent=this.value+'%'">
+            <span class="range-val" id="financePercentVal">25%</span>
+          </div>
+          <p class="hint">Inferred from SimilarWeb Referrals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 Content Quality -->
+  <div>
+    <div class="section-label">03 · Content Quality & Intent Signals</div>
+    <div class="card">
+
+      <!-- Auto-fill bar -->
+      <div id="sec03AutoBar" style="background:rgba(13,27,42,0.5);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.5;">
+          <span style="color:var(--gold);font-weight:500;">Auto-fill available</span> — inferred from your SimilarWeb PDF data.
+          Upload a PDF in the section above first, then click to populate.
+        </div>
+        <button onclick="autoFillSection03FromPdf()" style="padding:9px 18px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;border:none;border-radius:7px;cursor:pointer;white-space:nowrap;">✦ Auto-fill from PDF</button>
+      </div>
+
+      <!-- Inferred rationale box -->
+      <div id="sec03InferredNote" style="display:none;margin-bottom:16px;padding:12px 16px;background:rgba(46,204,138,0.06);border:1px solid rgba(46,204,138,0.2);border-radius:8px;font-size:12px;color:var(--text-dim);line-height:1.6;">
+        <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.1em;margin-bottom:6px;">✦ INFERRED FROM PDF · REVIEW & ADJUST</div>
+        <div id="sec03InferredNoteText"></div>
+      </div>
+
+      <div class="field-row full">
+        <div>
+          <label>Content Specificity to Credit Repair</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="contentSpec" value="4"><span>Dedicated to credit repair</span></label>
+            <label class="radio-pill"><input type="radio" name="contentSpec" value="3"><span>Credit repair is a major topic</span></label>
+            <label class="radio-pill"><input type="radio" name="contentSpec" value="2"><span>One of many finance topics</span></label>
+            <label class="radio-pill"><input type="radio" name="contentSpec" value="1"><span>Tangential / minor mention</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px;">
+        <div>
+          <label>User Intent Observed in Content</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="userIntent" value="4"><span>High urgency — solution seeking</span></label>
+            <label class="radio-pill"><input type="radio" name="userIntent" value="3"><span>Comparison shopping</span></label>
+            <label class="radio-pill"><input type="radio" name="userIntent" value="2"><span>Educational / informational</span></label>
+            <label class="radio-pill"><input type="radio" name="userIntent" value="1"><span>Awareness / early browsing</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px;">
+        <div>
+          <label>Content Format (select all that apply)</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <label class="radio-pill"><input type="checkbox" class="contentFormat" value="reviews"><span>Brand reviews / rankings</span></label>
+            <label class="radio-pill"><input type="checkbox" class="contentFormat" value="guides"><span>How-to guides</span></label>
+            <label class="radio-pill"><input type="checkbox" class="contentFormat" value="comparison"><span>Side-by-side comparisons</span></label>
+            <label class="radio-pill"><input type="checkbox" class="contentFormat" value="calculator"><span>Tools / calculators</span></label>
+            <label class="radio-pill"><input type="checkbox" class="contentFormat" value="news"><span>News / editorial</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full" style="margin-top:16px;">
+        <div>
+          <label>Observations from reviewing the site (optional)</label>
+          <textarea id="siteNotes" placeholder="e.g. Has a dedicated 'Best Credit Repair Services' page, Your Brand appears in 3 comparison tables..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 Audience -->
+  <div>
+    <div class="section-label">04 · Audience Demographics</div>
+    <div class="card">
+      <div class="field-row">
+        <div>
+          <label>Estimated Median Age Range</label>
+          <select id="audienceAge">
+            <option value="">— Select —</option>
+            <option value="18-24">18–24</option>
+            <option value="25-34">25–34</option>
+            <option value="35-44">35–44</option>
+            <option value="45-54">45–54</option>
+            <option value="55+">55+</option>
+            <option value="unknown">Unknown</option>
+          </select>
+          <p class="hint">From SimilarWeb audience data</p>
+        </div>
+        <div>
+          <label>US Traffic Share</label>
+          <div class="range-wrapper">
+            <input type="range" id="usTraffic" min="0" max="100" value="70" oninput="document.getElementById('usTrafficVal').textContent=this.value+'%'">
+            <span class="range-val" id="usTrafficVal">70%</span>
+          </div>
+        </div>
+      </div>
+      <div class="field-row full">
+        <div>
+          <label>Signs of Financial Distress Audience (select all that apply)</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <label class="radio-pill"><input type="checkbox" class="distressSignal" value="debt_content"><span>Content on debt / collections</span></label>
+            <label class="radio-pill"><input type="checkbox" class="distressSignal" value="bad_credit_kw"><span>Keywords: "bad credit", "fix credit"</span></label>
+            <label class="radio-pill"><input type="checkbox" class="distressSignal" value="low_income_products"><span>Promotes secured cards / credit builder loans</span></label>
+            <label class="radio-pill"><input type="checkbox" class="distressSignal" value="high_cpm_fin"><span>Audience buys financial products</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 Audience Pain Point -->
+  <div>
+    <div class="section-label">05 · Audience Pain Point</div>
+    <div class="card">
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:18px;line-height:1.6;">The LP recommendation is auto-generated from Traffic Type. This checks for audience/LP alignment — a mismatch is one of the primary drivers of low pay rates.</p>
+      <div class="field-row full">
+        <div>
+          <label>What primarily brings this partner's audience to the site?</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="collections_debt"><span>Collections / debt in collections</span></label>
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="loan_denied"><span>Loan denied / rebuilding credit</span></label>
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="review_shopping"><span>Actively comparing services</span></label>
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="late_payments"><span>Late payments / score damage</span></label>
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="general_improve"><span>General credit improvement</span></label>
+            <label class="radio-pill"><input type="radio" name="audiencePain" value="unknown"><span>Unknown</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 Partner Appetite & Risk -->
+  <div>
+    <div class="section-label">06 · Partner Appetite & Risk</div>
+    <div class="card">
+      <div class="field-row">
+        <div>
+          <label>Do they currently promote competitors?</label>
+          <select id="promotesCompetitors">
+            <option value="">— Select —</option>
+            <option value="yes_exclusively">Yes, prominently / exclusively</option>
+            <option value="yes_alongside">Yes, alongside others</option>
+            <option value="no">No</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </div>
+        <div>
+          <label>Have they worked with financial lead gen before?</label>
+          <select id="leadGenExp">
+            <option value="">— Select —</option>
+            <option value="yes_credit">Yes — credit/debt specifically</option>
+            <option value="yes_finance">Yes — broader finance</option>
+            <option value="yes_other">Yes — other verticals</option>
+            <option value="no">No experience</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </div>
+      </div>
+      <div class="field-row">
+        <div>
+          <label>Estimated Compliance Risk</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="complianceRisk" value="low"><span>Low</span></label>
+            <label class="radio-pill"><input type="radio" name="complianceRisk" value="medium"><span>Medium</span></label>
+            <label class="radio-pill"><input type="radio" name="complianceRisk" value="high"><span>High</span></label>
+          </div>
+          <p class="hint">Based on content tone, claims, disclaimers observed</p>
+        </div>
+        <div>
+          <label>Responsiveness / Partnership Interest</label>
+          <div class="radio-group">
+            <label class="radio-pill"><input type="radio" name="partnerInterest" value="high"><span>High</span></label>
+            <label class="radio-pill"><input type="radio" name="partnerInterest" value="medium"><span>Medium</span></label>
+            <label class="radio-pill"><input type="radio" name="partnerInterest" value="low"><span>Low / Unknown</span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="score-btn" onclick="runScorecard()">Generate Partner Score →</button>
+</div>
+
+<!-- RESULTS -->
+<div id="results">
+  <div class="section-label">Evaluation Results</div>
+
+  <div id="verdictBanner" class="verdict-banner go">
+    <div class="verdict-icon" id="verdictIcon">✦</div>
+    <div>
+      <div class="verdict-label" id="verdictLabel"></div>
+      <div class="verdict-title" id="verdictTitle"></div>
+      <div class="verdict-summary" id="verdictSummary"></div>
+    </div>
+  </div>
+
+  <!-- Evaluate Another — primary CTA right after verdict -->
+  <div style="text-align:right;margin-bottom:20px;">
+    <button onclick="resetForm()" style="padding:9px 20px;background:transparent;border:1px solid rgba(255,255,255,0.15);border-radius:7px;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all 0.15s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.3)';this.style.color='#fff'" onmouseout="this.style.borderColor='rgba(255,255,255,0.15)';this.style.color='var(--text-dim)'">← Evaluate Another Partner</button>
+  </div>
+
+  <!-- LP Recommendation -->
+  <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:20px 24px;margin-bottom:24px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:12px;">Landing Page Recommendation · L90 Benchmarks</div>
+    <div style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--gold-light);margin-bottom:6px;" id="lpRecoName">—</div>
+    <div style="font-size:13px;color:var(--text-dim);line-height:1.6;margin-bottom:14px;" id="lpRecoRationale"></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px;">
+      <div style="background:rgba(13,27,42,0.5);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:18px;color:#fff;" id="lpBenchmarkPayRate">—</div>
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px;">L90 Pay Rate</div>
+      </div>
+      <div style="background:rgba(13,27,42,0.5);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:18px;color:#fff;" id="lpBenchmarkReg2Co">—</div>
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px;">Reg → Checkout</div>
+      </div>
+      <div style="background:rgba(13,27,42,0.5);border:1px solid var(--border);border-radius:6px;padding:10px 14px;text-align:center;">
+        <div style="font-family:'DM Mono',monospace;font-size:18px;color:#fff;" id="lpBenchmarkCo2Bill">—</div>
+        <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;margin-top:2px;">Checkout → Billing</div>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--text-dim);line-height:1.6;" id="lpAlternatives"></div>
+  </div>
+
+  <!-- Scores -->
+  <div class="scores-row">
+    <div class="score-card">
+      <div class="score-card-label">Scale Score</div>
+      <div class="score-number" id="scaleScore" style="color:var(--gold-light)">—</div>
+      <div class="score-bar-track"><div class="score-bar-fill" id="scaleBar" style="width:0%;background:var(--gold)"></div></div>
+      <div class="score-desc" id="scaleDesc"></div>
+    </div>
+    <div class="score-card">
+      <div class="score-card-label">Pay Rate Score</div>
+      <div class="score-number" id="payRateScore" style="color:var(--green)">—</div>
+      <div class="score-bar-track"><div class="score-bar-fill" id="payRateBar" style="width:0%;background:var(--green)"></div></div>
+      <div class="score-desc" id="payRateDesc"></div>
+    </div>
+  </div>
+
+  <!-- Projections -->
+  <div class="projections-grid">
+    <div class="proj-card">
+      <div class="proj-val" id="projVisits">—</div>
+      <div class="proj-label">Est. Monthly Visits</div>
+      <div class="proj-range" id="projVisitsRange"></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-val" id="projLeads">—</div>
+      <div class="proj-label">Est. Signups / Mo</div>
+      <div class="proj-range" id="projLeadsRange"></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-val" id="projPaid">—</div>
+      <div class="proj-label">Est. Paid / Mo</div>
+      <div class="proj-range" id="projPaidRange"></div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-val" id="projPayRate">—</div>
+      <div class="proj-label">Predicted Pay Rate</div>
+      <div class="proj-range" id="projPayRateRange"></div>
+    </div>
+  </div>
+
+  <!-- Funnel -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-bottom:24px;">
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:14px;">Projected Funnel · L90 Benchmarks</div>
+    <div id="funnelSteps" style="display:flex;align-items:center;flex-wrap:wrap;gap:0;"></div>
+    <div style="font-size:11px;color:var(--text-dim);margin-top:12px;opacity:0.7;" id="funnelNote"></div>
+  </div>
+
+  <!-- Flags -->
+  <div id="closestMatchSection" style="display:none;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:22px 24px;margin-bottom:24px;"></div>
+
+  <div class="flags-section">
+    <div class="flags-title">Key Signals</div>
+    <div id="flagsList"></div>
+  </div>
+
+  <!-- Conditions -->
+  <div class="conditions-box" id="conditionsBox" style="display:none;">
+    <strong>⚡ Conditions / Watch Items</strong>
+    <div id="conditionsText"></div>
+  </div>
+
+  <!-- end results -->
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── L90 BENCHMARK DATA ──
+const L90 = {
+  publisher_email: {
+    collections:   { payRate:0.48, r2co:0.24, co2bill:0.30, c2l:0.28, label:'Collections LP' },
+    late_payments: { payRate:1.06, r2co:0.33, co2bill:0.36, c2l:0.83, label:'Late Payments LP' },
+    default:       { payRate:0.17, r2co:0.30, co2bill:0.25, c2l:0.17, label:'Default LP' },
+  },
+  network_email: {
+    default: { payRate:1.40, r2co:0.34, co2bill:0.33, c2l:0.37, label:'Default LP' },
+  },
+  sem_rankings: {
+    reviews:                    { payRate:0.76, r2co:0.46, co2bill:0.49, c2l:0.31, label:'Reviews Landing Page' },
+    default:                    { payRate:0.00, r2co:0.00, co2bill:0.00, c2l:0.00, label:'Default — ⚠ 0% pay rate' },
+    credit_snapshot_affiliates: { payRate:0.43, r2co:0.34, co2bill:0.40, c2l:0.66, label:'Credit Snapshot Affiliates' },
+  },
+  seo_rankings: {
+    credit_snapshot_affiliates: { payRate:0.43, r2co:0.34, co2bill:0.40, c2l:0.66, label:'Credit Snapshot Affiliates' },
+  },
+  loan_decline: {
+    suitability:     { payRate:0.15, r2co:0.34, co2bill:0.28, c2l:0.49, label:'Suitability Q1' },
+    default:         { payRate:0.64, r2co:0.37, co2bill:0.44, c2l:0.37, label:'Default LP' },
+    credit_snapshot: { payRate:0.58, r2co:0.35, co2bill:0.34, c2l:0.33, label:'Credit Snapshot LP' },
+  },
+  other: {
+    credit_snapshot: { payRate:0.58, r2co:0.26, co2bill:0.19, c2l:0.33, label:'Credit Snapshot LP' },
+    loan_denial:     { payRate:0.44, r2co:0.32, co2bill:0.27, c2l:0.48, label:'Loan Denial LP' },
+    reviews:         { payRate:0.50, r2co:0.16, co2bill:0.33, c2l:0.24, label:'Reviews Landing Page' },
+    default:         { payRate:0.37, r2co:0.35, co2bill:0.59, c2l:0.18, label:'Default LP' },
+    collections:     { payRate:0.29, r2co:0.23, co2bill:0.17, c2l:0.29, label:'Collections LP' },
+  }
+};
+
+const BEST_LP = {
+  publisher_email: {
+    primary: 'late_payments',
+    rationale: 'Late Payments LP drove 106% pay rate for Publisher Email in your L90 data. Collections LP is the proven high-volume option at 48% pay rate across 875 signups.',
+    alternatives: 'Also strong: Collections LP (48%, 875 signups — proven at scale). Avoid Default (17%).'
+  },
+  network_email: {
+    primary: 'default',
+    rationale: 'Network Email on Default shows a 140% pay rate signal (likely timing/attribution lag, but strongly positive). No alternate LP tested yet.',
+    alternatives: 'Recommended test: Collections LP, Late Payments LP — mirror Publisher Email strategy.'
+  },
+  sem_rankings: {
+    primary: 'reviews',
+    rationale: 'Reviews Landing Page drove 76% pay rate for SEM Rankings — above company average. Default LP produced 0% pay rate at 141 signups. Never route SEM Rankings to Default.',
+    alternatives: 'Secondary: Credit Snapshot Affiliates LP (43%). Never use Default — 0% pay rate confirmed.'
+  },
+  seo_rankings: {
+    primary: 'credit_snapshot_affiliates',
+    rationale: 'Credit Snapshot Affiliates is the only tested LP for SEO Rankings in your L90. Given the high-intent SEO profile, also test Reviews Landing Page.',
+    alternatives: 'Recommended test: Reviews Landing Page — high-intent SEO users likely respond like SEM Rankings audience.'
+  },
+  loan_decline: {
+    primary: 'default',
+    rationale: 'Default LP outperforms Suitability LP 64% vs 15% for Loan Decline traffic. Use Default or Credit Snapshot LP.',
+    alternatives: 'Also strong: Credit Snapshot LP (58%). Avoid Suitability Q1 — 15% pay rate, worst confirmed pairing for this traffic type.'
+  },
+  other: {
+    primary: 'credit_snapshot',
+    rationale: 'Credit Snapshot LP shows 58% pay rate for Other traffic — at company average. Loan Denial LP (44%) works well for audiences recently denied credit.',
+    alternatives: 'Also test: Loan Denial LP (44%), Reviews LP (50% small sample).'
+  }
+};
+
+// ── HELPERS ──
+function getRadio(name) {
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? el.value : null;
+}
+function getChecked(cls) {
+  return Array.from(document.querySelectorAll('.'+cls+':checked')).map(e => e.value);
+}
+function getTrafficTypes() {
+  return Array.from(document.querySelectorAll('.trafficTypeCheck:checked')).map(e => e.value);
+}
+function getPrimaryTrafficType() {
+  // First checked = primary; fallback order
+  const types = getTrafficTypes();
+  return types.length ? types[0] : null;
+}
+function fmt(n) {
+  if (!n && n !== 0) return '—';
+  if (n >= 1000000) return (n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+  if (n >= 1000)    return (n/1000).toFixed(1).replace(/\.0$/,'')+'K';
+  return n.toString();
+}
+function pct(n) {
+  return (n !== null && n !== undefined && !isNaN(n)) ? Math.round(n*100)+'%' : '—';
+}
+
+// ── LP LIVE PREVIEW (on traffic type change) ──
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.trafficTypeCheck').forEach(cb => {
+    cb.addEventListener('change', function() {
+      const tt = getPrimaryTrafficType();
+      if (!tt) { document.getElementById('lpPreviewCard').style.display='none'; return; }
+      const reco = BEST_LP[tt];
+      const bench = L90[tt] ? L90[tt][reco.primary] : null;
+      if (!reco || !bench) return;
+      const prLabel = bench.payRate > 0.40 ? '✦ Above channel avg' : bench.payRate > 0.25 ? '◈ Marginal — set pay rate gate' : '⚠ Below threshold';
+      document.getElementById('lpPreviewContent').innerHTML = `
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:8px;">
+          <div style="font-family:'DM Serif Display',serif;font-size:20px;color:var(--gold-light);">${bench.label}</div>
+          <div style="font-size:11px;padding:3px 10px;border-radius:20px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);color:var(--gold);font-family:'DM Mono',monospace;">${Math.round(bench.payRate*100)}% pay rate in L90</div>
+          <div style="font-size:11px;color:var(--text-dim);">${prLabel}</div>
+        </div>
+        <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">${reco.rationale}</div>`;
+      document.getElementById('lpPreviewCard').style.display = 'block';
+    });
+  });
+});
+
+// ── SYNC PREVIEW TRAFFIC TYPE → MAIN FORM ──
+document.addEventListener('change', function(e) {
+  if (e.target.classList.contains('trafficTypeCheck')) {
+    // Sync all trafficTypeCheck checkboxes with same value across preview + main form
+    const val = e.target.value;
+    const checked = e.target.checked;
+    document.querySelectorAll(`.trafficTypeCheck[value="${val}"]`).forEach(cb => {
+      cb.checked = checked;
+    });
+    // Trigger LP preview update
+    e.target.dispatchEvent(new Event('change', {bubbles: false}));
+  }
+});
+function toggleManualEntry() {
+  const m = document.getElementById('swManualEntry');
+  const p = document.getElementById('swParsedPreview');
+  const u = document.getElementById('swUploadZone');
+  if (m.style.display === 'none') {
+    m.style.display = 'block';
+    // If parsed preview isn't showing, show a minimal version of the fields
+    if (p.style.display === 'none') {
+      p.style.display = 'block';
+      u.style.display = 'none';
+    }
+  } else {
+    m.style.display = 'none';
+  }
+}
+
+function handlePdfDrop(e) {
+  const file = e.dataTransfer.files[0];
+  if (file && file.type === 'application/pdf') handlePdfFile(file);
+}
+
+function handlePdfFile(file) {
+  if (!file) return;
+  document.getElementById('swUploadZone').style.display = 'none';
+  document.getElementById('swParsingStatus').style.display = 'block';
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    // Use PDF.js to extract text
+    const typedArray = new Uint8Array(e.target.result);
+    pdfjsLib.getDocument(typedArray).promise.then(function(pdf) {
+      let fullText = '';
+      const pagePromises = [];
+      for (let i = 1; i <= Math.min(pdf.numPages, 6); i++) {
+        pagePromises.push(pdf.getPage(i).then(page => page.getTextContent().then(tc => {
+          return tc.items.map(item => item.str).join(' ');
+        })));
+      }
+      Promise.all(pagePromises).then(pages => {
+        fullText = pages.join('\n');
+        parseSimilarWebText(fullText);
+      });
+    }).catch(function(err) {
+      console.error('PDF parse error:', err);
+      showParseError();
+    });
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+function showParseError() {
+  document.getElementById('swParsingStatus').style.display = 'none';
+  document.getElementById('swUploadZone').style.display = 'none';
+  // Show a dedicated error state
+  let errDiv = document.getElementById('swErrorState');
+  if (!errDiv) {
+    errDiv = document.createElement('div');
+    errDiv.id = 'swErrorState';
+    document.getElementById('swUploadZone').parentNode.insertBefore(errDiv, document.getElementById('swUploadZone').nextSibling);
+  }
+  errDiv.style.display = 'block';
+  errDiv.innerHTML = `
+    <div style="padding:32px 28px;text-align:center;">
+      <div style="font-size:28px;margin-bottom:12px;">⚠️</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:17px;color:#fff;margin-bottom:8px;">Couldn't read that PDF</div>
+      <div style="font-size:13px;color:var(--text-dim);margin-bottom:24px;line-height:1.6;">This may not be a SimilarWeb report, or the format wasn't recognized.<br>Try uploading a different file, or enter your data manually.</div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button onclick="resetUploadZone()" style="padding:10px 24px;background:linear-gradient(135deg,var(--gold) 0%,var(--gold-light) 100%);color:var(--navy);font-family:'DM Sans',sans-serif;font-weight:600;font-size:13px;border:none;border-radius:8px;cursor:pointer;">↑ Try a different PDF</button>
+        <button onclick="resetUploadZone();toggleManualEntry();" style="padding:10px 24px;background:transparent;border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:var(--text-dim);font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;">Enter manually instead</button>
+      </div>
+    </div>`;
+}
+
+function resetUploadZone() {
+  const errDiv = document.getElementById('swErrorState');
+  if (errDiv) errDiv.style.display = 'none';
+  document.getElementById('swParsedPreview').style.display = 'none';
+  document.getElementById('swUploadZone').style.display = 'block';
+  document.getElementById('swPdfInput').value = '';
+}
+
+function parseSimilarWebText(text) {
+  const parsed = {};
+  const unparsed = [];
+
+  // ── Domain — find the SUBJECT domain, not similarweb's own domains
+  // SW PDFs have cover page: "Website Analysis\n[domain]\nView the full analysis at:\npro.similarweb.com"
+  // Strategy: find all domains, exclude known tool/platform domains, take the first real one
+  const EXCLUDED_DOMAINS = [
+    'similarweb.com', 'pro.similarweb.com', 'google.com', 'facebook.com',
+    'flexoffers.com', 'control.corp.flexoffers.com', 'awetext.com',
+    'getsearchinfo.com', 'brillyantly.com', 'extracashloans.com',
+    'quora.com', 'info@similarweb', 'allrights', 'ltd.2019'
+  ];
+  const domainRegex = /\b([a-zA-Z0-9][a-zA-Z0-9-]*\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2,})?)\b/g;
+  let domainMatch = null;
+  let dm;
+  while ((dm = domainRegex.exec(text)) !== null) {
+    const candidate = dm[1].toLowerCase().replace(/^www\./, '');
+    const isExcluded = EXCLUDED_DOMAINS.some(ex => candidate.includes(ex));
+    const isToolDomain = candidate.includes('similarweb') || candidate.includes('@');
+    const looksReal = /^[a-z0-9][a-z0-9-]+\.[a-z]{2,}$/.test(candidate);
+    if (!isExcluded && !isToolDomain && looksReal) {
+      domainMatch = candidate;
+      break;
+    }
+  }
+  if (domainMatch) {
+    parsed.domain = domainMatch;
+    parsed.partnerName = domainMatch
+      .replace(/\.[^.]+$/, '')           // strip TLD
+      .replace(/[-_]/g, ' ')             // hyphens to spaces
+      .replace(/\b\w/g, c => c.toUpperCase()); // Title Case
+  }
+
+  // ── Monthly Visits ──
+  // Normalize text for parsing: collapse whitespace so "600,386\n" becomes "600,386"
+  const normText = text.replace(/\r?\n/g, ' ').replace(/\s+/g, ' ');
+
+  let rawVisits = null;
+  // Pattern 1: explicit label + number (handles "Monthly visits 600,386" and "Monthly visits 2.257M")
+  const vp1 = normText.match(/(?:Monthly|Total)\s+visits?\s*[^\d]{0,20}?([\d,]+(?:\.\d+)?\s*[KMB]?)\b/i);
+  if (vp1) rawVisits = vp1[1].trim();
+
+  // Pattern 2: number with M/K/B suffix standalone (e.g. "2.257M") — must have suffix
+  if (!rawVisits) {
+    const vp2 = normText.match(/\b(\d+\.\d+\s*[KMB])\b/i) || normText.match(/\b(\d{2,}\s*[KMB])\b/i);
+    if (vp2) rawVisits = vp2[1].trim();
+  }
+
+  // Pattern 3: comma-formatted integer like 600,386 or 1,234,567 (must have at least one comma group)
+  if (!rawVisits) {
+    const vp3 = normText.match(/\b(\d{1,3}(?:,\d{3})+)\b/);
+    // Exclude 4-digit years (2024, 2025, 2026 etc)
+    if (vp3 && !/^20\d{2}$/.test(vp3[1].replace(/,/g,''))) rawVisits = vp3[1].trim();
+  }
+
+  if (rawVisits) {
+    // Strip any accidental trailing letters that aren't K/M/B (e.g. newline artifacts)
+    rawVisits = rawVisits.replace(/\s*([KMBkmb])$/, (_, s) => s.toUpperCase())
+                         .replace(/[^0-9.,KMBkmb]/g, '').trim();
+    parsed.visits = rawVisits;
+  } else {
+    unparsed.push('Monthly Visits');
+  }
+
+  // ── Global Rank ──
+  const rankMatch = normText.match(/Global\s+rank[^#\d]*#?([\d,]+)/i) ||
+                    normText.match(/#([\d,]+)\s*(?:Global|Rank)/i);
+  if (rankMatch) {
+    parsed.rank = rankMatch[1].replace(/,/g, '');
+  } else {
+    unparsed.push('Global Rank');
+  }
+
+  // ── US Traffic % ──
+  const usMatch = normText.match(/United\s+States[^%\d]*(\d+(?:\.\d+)?)\s*%/i);
+  if (usMatch) {
+    parsed.us = usMatch[1] + '%';
+  } else {
+    unparsed.push('US Traffic %');
+  }
+
+  // ── Traffic Trend ──
+  const trendMatch = normText.match(/([+-]?\d+(?:\.\d+)?)\s*%\s*from\s*last\s*month/i) ||
+                     normText.match(/([+-]?\d+(?:\.\d+)?)\s*%\s*(?:MoM|month[^a-z]*over)/i);
+  if (trendMatch) {
+    const change = parseFloat(trendMatch[1]);
+    if      (change >  15) parsed.trend = 'growing_fast';
+    else if (change >   3) parsed.trend = 'growing';
+    else if (change >= -3) parsed.trend = 'flat';
+    else                   parsed.trend = 'declining';
+    parsed.trendPct = trendMatch[1];
+  } else {
+    unparsed.push('Traffic Trend (set manually)');
+  }
+
+  // ── Channel breakdown ──
+  const channels = {};
+  const chanPattern = /(Direct|Organic(?:\s+Search)?|Paid(?:\s+Search)?|Referrals?|Display|Social|Email)\s+(\d+(?:\.\d+)?)\s*%/gi;
+  let m;
+  while ((m = chanPattern.exec(normText)) !== null) {
+    const key = m[1].toLowerCase().replace(/\s+search/, '').replace(/s$/, '');
+    channels[key] = parseFloat(m[2]);
+  }
+  // Also try "46.77%\n13.20%\n..." with channel labels nearby
+  // Fallback: look for the label+% pairs in the channels overview section
+  if (Object.keys(channels).length === 0) {
+    const pctMatches = [...text.matchAll(/(\d+\.\d+)%/g)].map(x => parseFloat(x[1]));
+    // SW free PDF channel order: Direct, Organic, Paid, Referrals, Display, Social, Email
+    const labels = ['direct','organic','paid','referral','display','social','email'];
+    if (pctMatches.length >= 4) {
+      labels.forEach((l, i) => { if (pctMatches[i] !== undefined) channels[l] = pctMatches[i]; });
+    }
+  }
+  parsed.channels = channels;
+
+  // ── Infer Traffic Type from channel mix ──
+  const direct   = channels['direct']   || 0;
+  const organic  = channels['organic']  || 0;
+  const paid     = channels['paid']     || 0;
+  const referral = channels['referral'] || 0;
+  const email    = channels['email']    || 0;
+
+  // Top referring industries from PDF
+  const textLower = normText.toLowerCase();
+  const hasNewsReferrers  = textLower.includes('yahoo') || textLower.includes('msn') || textLower.includes('aol') || textLower.includes('flipboard');
+  const hasFinanceOutgoing = textLower.includes('investing') || textLower.includes('lending') || textLower.includes('credit');
+
+  let inferredType = null;
+  let inferredRationale = '';
+
+  if (direct >= 50 && email < 5) {
+    // High direct = loyal audience — likely newsletter/publisher email
+    inferredType = 'publisher_email';
+    inferredRationale = `${Math.round(direct)}% direct traffic — likely loyal newsletter/subscriber base`;
+  } else if (direct >= 35 && (email > 2 || referral > 20)) {
+    inferredType = 'publisher_email';
+    inferredRationale = `${Math.round(direct)}% direct + referral pattern — likely publisher email or newsletter`;
+  } else if (paid >= 30) {
+    inferredType = 'sem_rankings';
+    inferredRationale = `${Math.round(paid)}% paid search — SEM Rankings profile`;
+  } else if (organic >= 40) {
+    inferredType = 'seo_rankings';
+    inferredRationale = `${Math.round(organic)}% organic search — SEO Rankings profile`;
+  } else if (referral >= 40 && hasNewsReferrers) {
+    inferredType = 'publisher_email';
+    inferredRationale = `${Math.round(referral)}% referral from news aggregators (Yahoo, MSN, AOL) — content syndication / publisher`;
+  }
+
+  // Top referring industry
+  if (textLower.includes('news and media') || textLower.includes('news & media')) {
+    parsed.industry = 'news_media';
+  } else if (textLower.includes('finance') || textLower.includes('banking') || textLower.includes('credit')) {
+    parsed.industry = 'finance';
+  } else if (textLower.includes('personal finance') || textLower.includes('investment')) {
+    parsed.industry = 'personal_finance';
+  }
+
+  // Outgoing destinations → infer credit/finance signal
+  if (textLower.includes('investing app') || textLower.includes('real estate investing') || textLower.includes('budgeting app')) {
+    parsed.outgoing = 'fintech';
+  } else if (textLower.includes('credit repair') || textLower.includes('creditrepair')) {
+    parsed.outgoing = 'credit_repair';
+  }
+
+  // If we couldn't parse any core fields, treat as wrong PDF
+  if (!parsed.visits && !parsed.rank && !parsed.us) {
+    showParseError();
+    return;
+  }
+
+  // ── Store signals for Section 03 auto-fill ──
+  _pdfSignals = {
+    hasPdfData:  true,
+    rawText:     text,
+    industry:    parsed.industry || '',
+    outgoing:    parsed.outgoing || '',
+    channels:    channels,
+    inferredType: inferredType,
+  };
+
+  // ── Populate partner identity ──
+  if (parsed.domain) {
+    const nameEl   = document.getElementById('partnerName');
+    const domainEl = document.getElementById('domain');
+    // Always set from PDF — user can override manually
+    if (nameEl)   nameEl.value   = parsed.partnerName;
+    if (domainEl) domainEl.value = parsed.domain;
+  }
+
+  // ── Populate SW fields ──
+  if (parsed.visits) {
+    document.getElementById('sw_visits').value = parsed.visits;
+    setFieldSrc('sw_visits_src', '✓ parsed from PDF');
+    // Also push directly into the main scorecard form so scale score works immediately
+    const rawNum = parseSWNumber(parsed.visits);
+    if (rawNum > 0) {
+      document.getElementById('monthlyVisits').value = Math.round(rawNum);
+    }
+  }
+  if (parsed.rank) {
+    document.getElementById('sw_rank').value = parsed.rank;
+    setFieldSrc('sw_rank_src', '✓ parsed from PDF');
+    // Also infer domain authority directly
+    const rankNum = parseInt(parsed.rank);
+    let da = 20;
+    if (rankNum <= 1000) da=92; else if (rankNum <= 5000) da=82; else if (rankNum <= 20000) da=72;
+    else if (rankNum <= 100000) da=58; else if (rankNum <= 500000) da=42; else if (rankNum <= 2000000) da=28;
+    document.getElementById('domainAuth').value = da;
+  }
+  if (parsed.us)       { document.getElementById('sw_us').value     = parsed.us;     setFieldSrc('sw_us_src',     '✓ parsed from PDF'); }
+  if (parsed.trend)    { document.getElementById('sw_trend').value  = parsed.trend;  setFieldSrc('sw_trend_src',  `✓ ${parsed.trendPct}% MoM → ${parsed.trend.replace(/_/g,' ')}`); }
+  if (parsed.industry) { document.getElementById('sw_ref_industry').value = parsed.industry; setFieldSrc('sw_ref_src', '✓ inferred from PDF text'); }
+  if (parsed.outgoing) { document.getElementById('sw_outgoing').value = parsed.outgoing; }
+
+  // ── Auto-select Traffic Type checkboxes ──
+  if (inferredType) {
+    document.querySelectorAll('.trafficTypeCheck').forEach(cb => { cb.checked = false; });
+    const cb = document.querySelector(`.trafficTypeCheck[value="${inferredType}"]`);
+    if (cb) {
+      cb.checked = true;
+      cb.dispatchEvent(new Event('change'));
+      setFieldSrc('sw_traffictype_src', `✓ ${inferredRationale}`);
+    }
+  }
+
+  // ── Show unparsed notice ──
+  if (unparsed.length > 0) {
+    const note = document.getElementById('swUnparsedNote');
+    note.style.display = 'block';
+    note.innerHTML = '⚠ Couldn\'t auto-read: <strong>' + unparsed.join(', ') + '</strong>. Fill these in manually before applying.';
+  }
+
+  document.getElementById('swParsingStatus').style.display = 'none';
+  document.getElementById('swParsedPreview').style.display = 'block';
+}
+
+function setFieldSrc(id, text) {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = text; el.style.color = 'var(--green)'; }
+}
+
+// ── SIMILARWEB APPLY TO SCORECARD ──
+function parseSWNumber(str) {
+  if (!str) return 0;
+  str = str.toString().replace(/[,$\s#]/g,'').toUpperCase();
+  if (str.endsWith('B')) return parseFloat(str)*1000000000;
+  if (str.endsWith('M')) return parseFloat(str)*1000000;
+  if (str.endsWith('K')) return parseFloat(str)*1000;
+  return parseInt(str)||0;
+}
+
+function importSimilarWeb() {
+  const visits      = parseSWNumber(document.getElementById('sw_visits').value);
+  const rank        = parseSWNumber(document.getElementById('sw_rank').value);
+  const trend       = document.getElementById('sw_trend').value;
+  const usPct       = parseSWNumber((document.getElementById('sw_us').value||'').replace('%',''));
+  const refIndustry = document.getElementById('sw_ref_industry').value;
+  const outgoing    = document.getElementById('sw_outgoing').value;
+  const creditKw    = document.getElementById('sw_creditkw').value;
+  const intentVal   = document.getElementById('sw_intent').value;
+
+  // Store for Section 03 inference
+  _pdfSignals = {
+    hasPdfData: true,
+    industry:   refIndustry,
+    outgoing:   outgoing,
+    channels:   _pdfSignals.channels || {},
+    rawText:    _pdfSignals.rawText  || '',
+  };
+
+  let filled = 0;
+
+  if (visits) { document.getElementById('monthlyVisits').value = Math.round(visits); filled++; }
+
+  if (rank) {
+    let da = 20;
+    if (rank<=1000) da=92; else if (rank<=5000) da=82; else if (rank<=20000) da=72;
+    else if (rank<=100000) da=58; else if (rank<=500000) da=42; else if (rank<=2000000) da=28;
+    document.getElementById('domainAuth').value = da; filled++;
+  }
+
+  if (trend) { const s=document.getElementById('trafficTrend'); if(s){s.value=trend;filled++;} }
+
+  if (usPct) {
+    const sl=document.getElementById('usTraffic'), d=document.getElementById('usTrafficVal');
+    if(sl){sl.value=Math.min(100,usPct); if(d)d.textContent=Math.min(100,usPct)+'%'; filled++;}
+  }
+
+  let finPct=5;
+  if(refIndustry==='finance'||refIndustry==='personal_finance') finPct=65;
+  else if(outgoing==='credit_repair') finPct=55;
+  else if(outgoing==='fintech') finPct=35;
+  else if(refIndustry==='news_media'&&outgoing==='general_finance') finPct=20;
+  else if(refIndustry==='news_media') finPct=8;
+  else if(outgoing==='general_finance') finPct=18;
+  const fs=document.getElementById('financePercent'), fd=document.getElementById('financePercentVal');
+  if(fs){fs.value=finPct; if(fd)fd.textContent=finPct+'%'; filled++;}
+
+  let siteType='news_general';
+  if(outgoing==='credit_repair'&&(creditKw==='many'||creditKw==='some')) siteType='comparison_review';
+  else if(refIndustry==='finance'||refIndustry==='personal_finance') siteType=creditKw==='many'?'credit_specific':'personal_finance_broad';
+  else if(outgoing==='fintech'||outgoing==='general_finance') siteType='personal_finance_broad';
+  const stEl=document.querySelector('input[name="siteType"][value="'+siteType+'"]');
+  if(stEl){stEl.checked=true; filled++;}
+
+  if (creditKw) {
+    const specMap={many:'4',some:'3',few:'2',none:'1'};
+    const specVal=specMap[creditKw];
+    if(specVal){
+      const el=document.querySelector('input[name="contentSpec"][value="'+specVal+'"]');
+      if(el){el.checked=true; filled++;}
+      const kwEst={many:600,some:120,few:20,none:2};
+      document.getElementById('creditKeywords').value=kwEst[creditKw]||0;
+    }
+  }
+
+  if(intentVal){
+    const el=document.querySelector('input[name="userIntent"][value="'+intentVal+'"]');
+    if(el){el.checked=true; filled++;}
+  }
+
+  if(outgoing==='credit_repair'||outgoing==='fintech'){
+    if(creditKw==='many'){
+      const d=document.querySelector('.distressSignal[value="debt_content"]');
+      const b=document.querySelector('.distressSignal[value="bad_credit_kw"]');
+      if(d)d.checked=true; if(b)b.checked=true;
+    }
+  }
+  if(creditKw==='many'||outgoing==='credit_repair'){
+    const r=document.querySelector('.contentFormat[value="reviews"]');
+    const c=document.querySelector('.contentFormat[value="comparison"]');
+    if(r)r.checked=true; if(c)c.checked=true;
+  }
+
+  ['monthlyVisits','domainAuth','creditKeywords'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el.value){el.style.transition='box-shadow 0.3s';el.style.boxShadow='0 0 0 3px rgba(201,168,76,0.5)';setTimeout(()=>{el.style.boxShadow='';},2500);}
+  });
+
+  document.getElementById('scoreForm').scrollIntoView({behavior:'smooth',block:'start'});
+  setTimeout(()=>{
+    const t=document.createElement('div');
+    t.textContent=`✓ ${filled} fields applied to scorecard`;
+    t.style.cssText='position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:rgba(46,204,138,0.15);border:1px solid rgba(46,204,138,0.4);color:#2ecc8a;font-family:DM Mono,monospace;font-size:12px;padding:10px 20px;border-radius:100px;z-index:9999;letter-spacing:0.08em;white-space:nowrap;';
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),3000);
+  },500);
+}
+
+// ── MAIN SCORING ENGINE ──
+// ── Known Partner Data ─────────────────────────────────────────────────────
+const KNOWN_PARTNERS = {
+  harborview: {
+    name: 'Harborview Loans',
+    trafficType: 'loan_decline',
+    siteType: 'comparison_review',
+    monthlyVisits: 5123000,
+    domainAuth: 82,
+    trafficTrend: 'growing',
+    creditKeywords: 2000,
+    financePercent: 70,
+    contentSpec: 3,
+    userIntent: 4,
+    contentFormats: ['comparison','reviews'],
+    audienceAge: '35-44',
+    usTraffic: 97,
+    distressSignals: ['loan_denied','poor_credit_score','debt_mentioned'],
+    audiencePain: 'late_payments',
+    promotesCompetitors: 'yes',
+    leadGenExp: 'yes_credit',
+    complianceRisk: 'low',
+    notes: 'Loan Decline Flow — user applies for personal loan on Harborview Loans, is denied due to credit, and our offer surfaces on the decline page. Highest-intent placement: explicit denial = explicit distress signal. 5.1M total visits Jan 2026, +11.1% MoM. Primary channel is direct (44%) + paid (24%). DA ~82.',
+  },
+  beaconreviews: {
+    name: 'Beacon Reviews',
+    trafficType: 'sem_rankings',
+    siteType: 'comparison_review',
+    monthlyVisits: 881308,
+    domainAuth: 62,
+    trafficTrend: 'growing',
+    creditKeywords: 1000,
+    financePercent: 75,
+    contentSpec: 4,
+    userIntent: 4,
+    contentFormats: ['comparison','reviews','guides'],
+    audienceAge: '35-44',
+    usTraffic: 97,
+    distressSignals: ['poor_credit_score','debt_mentioned'],
+    audiencePain: 'review_shopping',
+    promotesCompetitors: 'yes',
+    leadGenExp: 'yes_credit',
+    complianceRisk: 'low',
+    notes: 'SEM Rankings — buys paid search traffic (61% of visits) and routes to a dedicated credit comparison LP. Highest-volume SEM Rankings source and benchmark for the category. 881K visits Jan 2026, +7.1% MoM. DA ~62. Primary GO benchmark for SEM Rankings traffic type.',
+  },
+  ledgernest: {
+    name: 'Ledger Nest',
+    trafficType: 'other',
+    siteType: 'credit_specific',
+    monthlyVisits: 3587000,
+    domainAuth: 82,
+    trafficTrend: 'growing',
+    creditKeywords: 5000,
+    financePercent: 60,
+    contentSpec: 4,
+    userIntent: 3,
+    contentFormats: ['tools','guides'],
+    audienceAge: '25-34',
+    usTraffic: 99,
+    distressSignals: ['poor_credit_score','monitoring_credit'],
+    audiencePain: 'late_payments',
+    promotesCompetitors: 'yes',
+    leadGenExp: 'yes_credit',
+    complianceRisk: 'low',
+    notes: 'Direct App / Credit Monitoring — 82% direct traffic = logged-in existing members. Effective affiliate-reachable audience is ~18% of total (~645K). Outgoing links confirm credit-distressed sends to several subprime lender and card-issuer destinations. Credit-specific site (ranked by DA ~82). 3.6M total visits Jan 2026, +8.6% MoM. Score reflects effective reach, not total visits.',
+  },
+  dollardispatch: {
+    name: 'Dollar Dispatch',
+    trafficType: 'publisher_email',
+    siteType: 'personal_finance_broad',
+    monthlyVisits: 1062000,
+    domainAuth: 68,
+    trafficTrend: 'growing',
+    creditKeywords: 200,
+    financePercent: 35,
+    contentSpec: 2,
+    userIntent: 2,
+    contentFormats: ['guides','deals'],
+    audienceAge: '45-54',
+    usTraffic: 93,
+    distressSignals: ['debt_mentioned'],
+    audiencePain: 'late_payments',
+    promotesCompetitors: 'no',
+    leadGenExp: 'yes_finance',
+    complianceRisk: 'low',
+    notes: 'Publisher / Email Newsletter — 78% direct traffic = loyal newsletter subscriber base. Finance content exists (top referring industry: Banking Credit & Lending 26%) but outgoing destinations (retail, entertainment and streaming ads) signal deals/savings audience, not credit distress. 1.1M visits Jan 2026, +13.1% MoM. DA ~68. Audience pain point alignment is the key open question — test email placement carefully before scaling.',
+  },
+  pennycompass: {
+    name: 'Penny Compass',
+    trafficType: 'seo_rankings',
+    siteType: 'comparison_review',
+    monthlyVisits: 349108,
+    domainAuth: 42,
+    trafficTrend: 'declining',
+    creditKeywords: 500,
+    financePercent: 55,
+    contentSpec: 3,
+    userIntent: 3,
+    contentFormats: ['comparison','reviews'],
+    audienceAge: '25-34',
+    usTraffic: 80,
+    distressSignals: ['poor_credit_score','loan_denied'],
+    audiencePain: 'review_shopping',
+    promotesCompetitors: 'yes',
+    leadGenExp: 'yes_credit',
+    complianceRisk: 'low',
+    notes: 'SEO Rankings — organic-first site (51% organic). Outgoing ad destinations dominated by a single bad-credit lender site (86%) confirming loan-declined / bad-credit audience. But declining traffic (-4.9%), lower DA (~42), and only 80% US traffic limit near-term scale. 349K visits Jan 2026. Emerging SEO Rankings source — monitor, could scale into a meaningful source if traffic stabilizes.',
+  },
+};
+
+let _currentKnownPartnerKey = null;
+
+function loadKnownPartner(key) {
+  const p = KNOWN_PARTNERS[key];
+  if (!p) return;
+  _currentKnownPartnerKey = key;
+
+  // Basic fields
+  document.getElementById('partnerName').value = p.name;
+  document.getElementById('monthlyVisits').value = p.monthlyVisits;
+  document.getElementById('domainAuth').value = p.domainAuth;
+  document.getElementById('financePercent').value = p.financePercent;
+  document.getElementById('creditKeywords').value = p.creditKeywords;
+  document.getElementById('usTraffic').value = p.usTraffic;
+
+  // Update range display values
+  document.getElementById('financePercentVal').textContent = p.financePercent + '%';
+  document.getElementById('usTrafficVal').textContent = p.usTraffic + '%';
+
+  // Selects
+  const trendSel = document.getElementById('trafficTrend');
+  if (trendSel) trendSel.value = p.trafficTrend;
+  const ageSel = document.getElementById('audienceAge');
+  if (ageSel) ageSel.value = p.audienceAge;
+  const compSel = document.getElementById('promotesCompetitors');
+  if (compSel) compSel.value = p.promotesCompetitors;
+  const lgSel = document.getElementById('leadGenExp');
+  if (lgSel) lgSel.value = p.leadGenExp;
+
+  // Traffic Type — multi-select checkboxes (autofill but user can adjust)
+  document.querySelectorAll('.trafficTypeCheck').forEach(cb => {
+    cb.checked = (cb.value === p.trafficType);
+  });
+
+  // Other radio buttons
+  const radioGroups = ['siteType','contentSpec','userIntent','audiencePain','complianceRisk'];
+  const radioVals = {
+    siteType: p.siteType,
+    contentSpec: p.contentSpec,
+    userIntent: p.userIntent,
+    audiencePain: p.audiencePain,
+    complianceRisk: p.complianceRisk,
+  };
+  radioGroups.forEach(name => {
+    document.querySelectorAll(`input[name="${name}"]`).forEach(r => {
+      r.checked = (r.value == radioVals[name]);
+    });
+  });
+
+  // Checkboxes — content formats
+  document.querySelectorAll('.contentFormat').forEach(cb => {
+    cb.checked = p.contentFormats.includes(cb.value);
+  });
+  // Checkboxes — distress signals
+  document.querySelectorAll('.distressSignal').forEach(cb => {
+    cb.checked = p.distressSignals.includes(cb.value);
+  });
+
+  // Show partner note
+  const note = document.getElementById('knownPartnerNote');
+  note.style.display = 'block';
+  note.innerHTML = '<strong style="display:block;margin-bottom:6px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">Benchmark Context — ' + p.name + '</strong>' + p.notes;
+
+  // Trigger LP preview update
+  const primaryCb = document.querySelector('.trafficTypeCheck[value="'+p.trafficType+'"]');
+  if (primaryCb) primaryCb.dispatchEvent(new Event('change'));
+
+  // Scroll to form
+  document.querySelector('.form-grid').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ── KNOWN PARTNER VERDICTS (locked) ──
+const KNOWN_PARTNER_VERDICTS = {
+  harborview:       { verdict:'GO',        verdictClass:'go',   icon:'✦', title:'Validated GO — Loan Decline',        summary:'Harborview Loans is your highest-intent source. Loan Decline flow surfaces our offer at point of explicit credit denial. 5.1M visits, DA ~82, +11% MoM. Benchmark for the Loan Decline traffic type.' },
+  beaconreviews: { verdict:'GO',        verdictClass:'go',   icon:'✦', title:'Validated GO — SEM Rankings',        summary:'Beacon Reviews is your SEM Rankings benchmark. Buys paid search and routes to a dedicated credit comparison LP. 881K visits, DA ~62. Reviews LP drives 76% pay rate.' },
+  ledgernest:      { verdict:'GO',        verdictClass:'go',   icon:'✦', title:'Validated GO — App / Credit Tool',   summary:'Ledger Nest is high-volume, average pay rate. 3.6M visits but 82% direct (logged-in users) — effective affiliate reach ~645K. Strong distress signal audience. DA ~82.' },
+  dollardispatch:    { verdict:'GO',        verdictClass:'go',   icon:'✦', title:'Validated GO — Publisher Email',     summary:'Dollar Dispatch is medium volume, high pay rate. 78% direct = loyal newsletter base. Publisher Email + Late Payments LP = 106% pay rate in L90. 1.1M visits, DA ~68, +13% MoM.' },
+  pennycompass:        { verdict:'WATCHLIST', verdictClass:'soft', icon:'◌', title:'Watchlist — SEO Rankings',          summary:'Penny Compass has the right audience (loan-declined users confirmed via outgoing links) but declining traffic (-4.9%), lower DA (~42), and limited scale. 349K visits. Monitor — could grow into a meaningful source.' },
+};
+
+// ── CLOSEST MATCH ENGINE ──
+function findClosestMatch(trafficType, siteType, monthlyVisits, trafficTypes) {
+  const candidates = Object.entries(KNOWN_PARTNERS).map(([key, p]) => {
+    let score = 0;
+    // Traffic type match (primary signal)
+    if (p.trafficType === trafficType) score += 40;
+    else if (trafficTypes.includes(p.trafficType)) score += 20;
+    // Site type match
+    if (p.siteType === siteType) score += 25;
+    // Scale similarity — within 1 order of magnitude
+    if (monthlyVisits > 0 && p.monthlyVisits > 0) {
+      const ratio = Math.min(monthlyVisits, p.monthlyVisits) / Math.max(monthlyVisits, p.monthlyVisits);
+      if (ratio >= 0.3) score += 20;
+      else if (ratio >= 0.1) score += 10;
+    }
+    return { key, score, partner: p };
+  });
+
+  // Only surface if best match scores 40+ (must share traffic type or site type + scale)
+  const best = candidates.sort((a,b) => b.score - a.score)[0];
+  if (!best || best.score < 40) return null;
+  return best;
+}
+
+function renderClosestMatch(match, container) {
+  if (!match) { container.style.display='none'; return; }
+  const kv = KNOWN_PARTNER_VERDICTS[match.key];
+  const p  = match.partner;
+  const verdictColor = kv.verdictClass==='go' ? 'var(--green)' : kv.verdictClass==='soft' ? 'var(--amber)' : 'var(--red)';
+  const bgColor      = kv.verdictClass==='go' ? 'rgba(46,204,138,0.06)' : 'rgba(224,154,58,0.06)';
+  const borderColor  = kv.verdictClass==='go' ? 'rgba(46,204,138,0.25)' : 'rgba(224,154,58,0.25)';
+
+  container.style.display = 'block';
+  container.innerHTML = `
+    <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px;">Closest Known Partner Match</div>
+    <div style="background:${bgColor};border:1px solid ${borderColor};border-radius:8px;padding:16px 18px;display:flex;align-items:flex-start;gap:16px;">
+      <div style="flex-shrink:0;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;color:${verdictColor};letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px;">${kv.verdict}</div>
+        <div style="font-size:15px;color:#fff;font-weight:600;">${p.name}</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-top:2px;">${(p.monthlyVisits/1000).toFixed(0)}K visits · DA ~${p.domainAuth}</div>
+      </div>
+      <div style="flex:1;font-size:12px;color:var(--text-dim);line-height:1.6;">
+        <span style="color:${verdictColor};font-weight:600;">Profile match: </span>${getMatchRationale(match)}
+      </div>
+    </div>`;
+}
+
+function getMatchRationale(match) {
+  const p = match.partner;
+  const kv = KNOWN_PARTNER_VERDICTS[match.key];
+  const parts = [];
+  parts.push(`Same traffic type (${p.trafficType.replace(/_/g,' ')})`);
+  if (match.score >= 65) parts.push('similar site profile');
+  parts.push(`${kv.verdict === 'GO' ? 'validated GO source' : 'watchlist source'} in your benchmark set`);
+  return parts.join(' · ') + '. ' + kv.summary.split('.')[0] + '.';
+}
+
+// ── SECTION 03 AUTO-FILL FROM PDF DATA ──
+// Stores parsed PDF signals so Section 03 can reference them
+let _pdfSignals = {};
+
+function autoFillSection03FromPdf() {
+  const s = _pdfSignals;
+  const reasons = [];
+
+  if (!s.hasPdfData) {
+    // No PDF uploaded yet — try to infer from whatever is in the SW fields
+    s.industry    = document.getElementById('sw_ref_industry').value;
+    s.outgoing    = document.getElementById('sw_outgoing').value;
+    s.channels    = s.channels || {};
+    s.hasPdfData  = true;
+  }
+
+  const domain      = (document.getElementById('domain').value || '').toLowerCase();
+  const partnerName = (document.getElementById('partnerName').value || '').toLowerCase();
+  const industry    = s.industry || '';
+  const outgoing    = s.outgoing || '';
+  const channels    = s.channels || {};
+  const textLower   = (_pdfSignals.rawText || '').toLowerCase().replace(/\r?\n/g, ' ');
+
+  const direct   = channels.direct   || 0;
+  const organic  = channels.organic  || 0;
+  const paid     = channels.paid     || 0;
+  const referral = channels.referral || 0;
+
+  // ── CONTENT SPECIFICITY ──
+  // 4 = dedicated credit repair, 3 = major topic, 2 = one of many, 1 = tangential
+  let contentSpec = 2; // default: broad finance
+  if (outgoing === 'credit_repair' ||
+      textLower.includes('credit repair') ||
+      textLower.includes('creditrepair')) {
+    contentSpec = 3;
+    reasons.push('Outgoing traffic to credit repair brands → credit repair is a major topic');
+  } else if (industry === 'finance' || industry === 'personal_finance') {
+    if (outgoing === 'fintech' || outgoing === 'general_finance') {
+      contentSpec = 2;
+      reasons.push('Finance industry referrers + fintech outgoing → broad personal finance');
+    } else {
+      contentSpec = 3;
+      reasons.push('Finance/credit industry referrers → credit repair is a significant topic');
+    }
+  } else if (industry === 'news_media' ||
+             textLower.includes('news and media') ||
+             textLower.includes('news & media')) {
+    contentSpec = 2;
+    reasons.push('Top referring industry is News & Media → broad content, finance is one topic');
+  } else if (outgoing === 'fintech') {
+    contentSpec = 2;
+    reasons.push('Fintech outgoing destinations → personal finance content, not credit-specific');
+  }
+
+  // Boost for credit-specific domains
+  if (domain.includes('credit') || domain.includes('repair') || domain.includes('debt')) {
+    contentSpec = Math.min(4, contentSpec + 1);
+    reasons.push('Domain name includes credit/repair/debt signal');
+  }
+
+  // ── USER INTENT ──
+  // 4 = solution-seeking, 3 = comparison, 2 = educational, 1 = awareness
+  let userIntent = 2; // default: educational
+  if (paid >= 30) {
+    userIntent = 4;
+    reasons.push(`${Math.round(paid)}% paid search → high commercial intent, users actively seeking solutions`);
+  } else if (paid >= 15 || outgoing === 'credit_repair') {
+    userIntent = 3;
+    reasons.push(paid >= 15
+      ? `${Math.round(paid)}% paid search → moderate commercial intent`
+      : 'Credit repair outgoing → users comparing solutions');
+  } else if (organic >= 40 && (outgoing === 'credit_repair' || contentSpec >= 3)) {
+    userIntent = 3;
+    reasons.push('High organic + credit-specific outgoing → comparison-oriented audience');
+  } else if (direct >= 40 || referral >= 30) {
+    userIntent = 2;
+    reasons.push(`${direct >= 40 ? Math.round(direct)+'% direct' : Math.round(referral)+'% referral'} → loyal returning audience, likely informational/educational intent`);
+  } else if (industry === 'news_media') {
+    userIntent = 1;
+    reasons.push('News & media referrers → general awareness audience, low commercial intent');
+  }
+
+  // ── CONTENT FORMATS ──
+  const formats = [];
+  // News/editorial signals
+  if (industry === 'news_media' || direct >= 35 || referral >= 25) {
+    formats.push('news');
+  }
+  // Guides: common on broad personal finance and SEO-heavy sites
+  if (organic >= 25 || industry === 'personal_finance' || industry === 'finance') {
+    formats.push('guides');
+  }
+  // Reviews/comparison: credit-specific or comparison-oriented sites
+  if (contentSpec >= 3 || outgoing === 'credit_repair' || paid >= 20) {
+    formats.push('reviews');
+    formats.push('comparison');
+  }
+  // Calculator: common on mortgage/loan/finance tool sites
+  if (textLower.includes('calculator') || textLower.includes('mortgage') ||
+      textLower.includes('loan') || textLower.includes('investing')) {
+    formats.push('calculator');
+  }
+  // Deduplicate
+  const uniqueFormats = [...new Set(formats)];
+
+  // ── AUDIENCE PAIN POINT ──
+  let audiencePain = 'general_improve';
+  if (outgoing === 'credit_repair') {
+    audiencePain = 'loan_denied';
+    reasons.push('Outgoing to credit repair brands → audience has been denied credit or has bad credit');
+  } else if (outgoing === 'fintech' && (textLower.includes('loan') || textLower.includes('mortgage'))) {
+    audiencePain = 'loan_denied';
+  } else if (industry === 'news_media' || direct >= 40) {
+    audiencePain = 'general_improve';
+    reasons.push('News/content audience → general credit improvement intent, not specific distress');
+  } else if (paid >= 20) {
+    audiencePain = 'review_shopping';
+    reasons.push('High paid search → users actively comparing credit repair services');
+  } else if (contentSpec >= 3) {
+    audiencePain = 'late_payments';
+  }
+
+  // ── SITE NOTES auto-generated ──
+  const domain_display = document.getElementById('domain').value || partnerName;
+  const channelSummary = Object.entries(channels)
+    .filter(([,v]) => v > 3)
+    .sort(([,a],[,b]) => b-a)
+    .slice(0,3)
+    .map(([k,v]) => `${k} ${Math.round(v)}%`)
+    .join(', ');
+
+  const siteNotes = [
+    `${domain_display}: ${contentSpec >= 3 ? 'Credit repair is a prominent topic' : 'Broad personal finance site'} with ${userIntent >= 3 ? 'moderate-to-high' : 'informational'} user intent.`,
+    channelSummary ? `Traffic mix: ${channelSummary}.` : '',
+    outgoing ? `Outgoing destinations suggest ${outgoing === 'credit_repair' ? 'credit-distressed audience actively seeking solutions' : outgoing === 'fintech' ? 'fintech/personal finance audience' : 'general finance audience'}.` : '',
+    `Inferred from SimilarWeb PDF data — review site directly to confirm.`
+  ].filter(Boolean).join(' ');
+
+  // ── APPLY TO FORM ──
+  const csEl = document.querySelector(`input[name="contentSpec"][value="${contentSpec}"]`);
+  if (csEl) csEl.checked = true;
+
+  const uiEl = document.querySelector(`input[name="userIntent"][value="${userIntent}"]`);
+  if (uiEl) uiEl.checked = true;
+
+  document.querySelectorAll('.contentFormat').forEach(cb => { cb.checked = false; });
+  uniqueFormats.forEach(v => {
+    const cb = document.querySelector(`.contentFormat[value="${v}"]`);
+    if (cb) cb.checked = true;
+  });
+
+  const apEl = document.querySelector(`input[name="audiencePain"][value="${audiencePain}"]`);
+  if (apEl) apEl.checked = true;
+
+  document.getElementById('siteNotes').value = siteNotes;
+
+  // ── SHOW RATIONALE ──
+  const noteText = reasons.length
+    ? reasons.map(r => '· ' + r).join('\n')
+    : 'Inferred from channel mix and referring industries in your SimilarWeb PDF. Review and adjust if needed.';
+  document.getElementById('sec03InferredNoteText').style.whiteSpace = 'pre-line';
+  document.getElementById('sec03InferredNoteText').textContent = noteText;
+  document.getElementById('sec03InferredNote').style.display = 'block';
+}
+
+function runScorecard() {
+  const partnerName      = document.getElementById('partnerName').value || 'This Partner';
+  const trafficType      = getPrimaryTrafficType();
+  const trafficTypes     = getTrafficTypes();
+  const siteType         = getRadio('siteType');
+  const monthlyVisits    = parseInt(document.getElementById('monthlyVisits').value)||0;
+  const domainAuth       = parseInt(document.getElementById('domainAuth').value)||0;
+  const trafficTrend     = document.getElementById('trafficTrend').value;
+  const creditKeywords   = parseInt(document.getElementById('creditKeywords').value)||0;
+  const financePercent   = parseInt(document.getElementById('financePercent').value);
+  const contentSpec      = parseInt(getRadio('contentSpec')||'1');
+  const userIntent       = parseInt(getRadio('userIntent')||'1');
+  const contentFormats   = getChecked('contentFormat');
+  const audienceAge      = document.getElementById('audienceAge').value;
+  const usTraffic        = parseInt(document.getElementById('usTraffic').value);
+  const distressSignals  = getChecked('distressSignal');
+  const audiencePain     = getRadio('audiencePain');
+  const promotesCompetitors = document.getElementById('promotesCompetitors').value;
+  const leadGenExp       = document.getElementById('leadGenExp').value;
+  const complianceRisk   = getRadio('complianceRisk');
+
+  // LP recommendation
+  const recoLPData = BEST_LP[trafficType] || BEST_LP['other'];
+  const recoLP     = recoLPData.primary;
+  const ttData     = trafficType && L90[trafficType] ? L90[trafficType] : L90['other'];
+  const lpBench    = ttData[recoLP] || Object.values(ttData)[0];
+
+  // ── SCALE SCORE ──
+  let scalePoints = 0;
+  if      (monthlyVisits>=1000000) scalePoints+=30;
+  else if (monthlyVisits>=500000)  scalePoints+=25;
+  else if (monthlyVisits>=200000)  scalePoints+=20;
+  else if (monthlyVisits>=100000)  scalePoints+=14;
+  else if (monthlyVisits>=50000)   scalePoints+=8;
+  else if (monthlyVisits>=10000)   scalePoints+=4;
+  else scalePoints+=1;
+
+  if      (domainAuth>=80) scalePoints+=15;
+  else if (domainAuth>=60) scalePoints+=12;
+  else if (domainAuth>=40) scalePoints+=8;
+  else if (domainAuth>=20) scalePoints+=4;
+  else scalePoints+=1;
+
+  if      (trafficTrend==='growing_fast') scalePoints+=10;
+  else if (trafficTrend==='growing')      scalePoints+=7;
+  else if (trafficTrend==='flat')         scalePoints+=4;
+  else if (trafficTrend==='declining')    scalePoints+=1;
+
+  scalePoints += Math.round(financePercent/100*15);
+
+  if      (creditKeywords>=5000) scalePoints+=15;
+  else if (creditKeywords>=2000) scalePoints+=12;
+  else if (creditKeywords>=1000) scalePoints+=8;
+  else if (creditKeywords>=200)  scalePoints+=5;
+  else scalePoints+=1;
+
+  scalePoints += Math.round(usTraffic/100*10);
+  if (contentFormats.includes('comparison')||contentFormats.includes('reviews')) scalePoints+=3;
+  if (contentFormats.includes('calculator')) scalePoints+=2;
+  if (['publisher_email','network_email'].includes(trafficType)||siteType==='email_newsletter') scalePoints+=8;
+  scalePoints = Math.min(100, scalePoints);
+
+  // ── PAY RATE SCORE ──
+  const lpPR = lpBench ? lpBench.payRate : 0.30;
+
+  let prPoints = 0;
+  // Traffic type base — Publisher/Network Email boosted: proven high pay rate channels
+  const ttBase = {publisher_email:32,network_email:28,sem_rankings:28,seo_rankings:25,loan_decline:22,other:15};
+  prPoints += ttBase[trafficType]||15;
+  // Site type — email_newsletter boosted to reflect newsletter audience quality
+  const stMap = {comparison_review:26,credit_specific:28,email_newsletter:26,personal_finance_broad:10,coupon_deals:3,news_general:2};
+  prPoints += stMap[siteType]||0;
+  // Content specificity — weight reduced for email partners (newsletter breadth ≠ low quality)
+  const specWeight = ['publisher_email','network_email'].includes(trafficType) ? 8 : 16;
+  prPoints += (contentSpec-1)/3*specWeight;
+  prPoints += (userIntent-1)/3*16;
+  if (contentFormats.includes('reviews'))    prPoints+=4;
+  if (contentFormats.includes('comparison')) prPoints+=4;
+  if (contentFormats.includes('guides'))     prPoints+=2;
+  prPoints += Math.min(8,distressSignals.length*2);
+  if      (audienceAge==='35-44')                        prPoints+=4;
+  else if (audienceAge==='25-34'||audienceAge==='45-54') prPoints+=2;
+  if      (leadGenExp==='yes_credit')  prPoints+=4;
+  else if (leadGenExp==='yes_finance') prPoints+=2;
+  else if (leadGenExp==='yes_other')   prPoints+=1;
+  // LP benchmark — updated divisor to 0.40 (channel benchmark)
+  prPoints += Math.round((Math.min(lpPR,0.80)/0.40)*18)-10;
+  if (recoLP==='reviews'      && audiencePain==='review_shopping')  prPoints+=5;
+  if (recoLP==='collections'  && audiencePain==='collections_debt') prPoints+=5;
+  if (recoLP==='late_payments'&& audiencePain==='late_payments')    prPoints+=5;
+  prPoints = Math.min(100, Math.max(0, Math.round(prPoints)));
+
+  // ── PREDICTED PAY RATE ──
+  const basePR   = lpBench ? Math.min(lpBench.payRate,0.85) : 0.25;
+  const qualMult = 0.70+((contentSpec-1)/3*0.18)+((userIntent-1)/3*0.12);
+  const rawPR    = Math.min(0.85, basePR*qualMult);
+  const predictedPayRate = Math.round(rawPR*100);
+
+  // ── FUNNEL PROJECTIONS ──
+  const emailTypes  = ['publisher_email','network_email'];
+  const siteReach   = {comparison_review:0.40,credit_specific:0.60,email_newsletter:0.55,personal_finance_broad:0.15,coupon_deals:0.05,news_general:0.03};
+  const reachFactor = emailTypes.includes(trafficType) ? 0.60 : (siteReach[siteType]||0.15);
+  const relevantVisits    = Math.round(monthlyVisits*(financePercent/100)*reachFactor);
+  const c2l               = lpBench ? lpBench.c2l : 0.30;
+  const projLeads         = Math.round(relevantVisits*c2l*0.04);
+  const r2co              = lpBench ? lpBench.r2co : 0.32;
+  const co2bill           = lpBench ? lpBench.co2bill : 0.30;
+  const projRegistrations = Math.round(projLeads*0.90);
+  const projCheckouts     = Math.round(projRegistrations*r2co);
+  const projBillings      = Math.round(projCheckouts*co2bill);
+  const projSignups       = projBillings;
+  const projPaid          = Math.round(projSignups*rawPR);
+
+  // ── VERDICT — based on projected paids/month ──
+  // Thresholds: ≥25 paids/mo = GO, 10-24 = SOFT LAUNCH, 5-9 = WATCHLIST, <5 = PASS
+  // Pay rate and compliance act as modifiers, not primary gates
+  const projSignupsForVerdict = projSignups;
+  const projPaidsForVerdict   = projPaid;
+
+  const meetsPayRate    = predictedPayRate >= 25;  // minimum viable pay rate
+  const payRateStrong   = predictedPayRate >= 40;  // above channel avg
+  const complianceOk    = complianceRisk !== 'high';
+
+  let verdict, verdictClass, icon, title, summary;
+
+  if (complianceRisk === 'high') {
+    verdict='COMPLIANCE HOLD'; verdictClass='pass'; icon='⚠'; title='Compliance Review Required';
+    summary='Compliance flagged high. Legal review cost not justified until resolved.';
+
+  } else if (projPaidsForVerdict >= 25 && meetsPayRate) {
+    // Core GO threshold — 25+ paids/mo at viable pay rate
+    verdict='GO'; verdictClass='go'; icon='✦'; title='Recommended to Launch';
+    const ltvEstimate = Math.round(projPaidsForVerdict * 600 / 1000);
+    summary=`${partnerName} is projected to drive ~${projPaidsForVerdict} paids/month (~$${ltvEstimate}K/mo revenue at $600 LTV). ${payRateStrong ? 'Pay rate above channel avg.' : 'Pay rate is viable — watch closely in first 60 days.'} Proceed through compliance onboarding.`;
+
+  } else if (projPaidsForVerdict >= 10 && meetsPayRate) {
+    // Meaningful incremental revenue but not slam dunk
+    verdict='SOFT LAUNCH'; verdictClass='soft'; icon='◈'; title='Launch with Monitoring';
+    const ltvEstimate = Math.round(projPaidsForVerdict * 600 / 1000);
+    summary=`${partnerName} is projected to drive ~${projPaidsForVerdict} paids/month (~$${ltvEstimate}K/mo). Meaningful incremental revenue — worth a test. Set a 60-day review gate and confirm pay rate holds above 25% before scaling.`;
+
+  } else if (projPaidsForVerdict >= 5) {
+    // Some signal but too small to justify full onboarding
+    verdict='WATCHLIST'; verdictClass='soft'; icon='◌'; title='Too Small to Justify Onboarding Now';
+    summary=`${partnerName} shows the right audience signals but projected volume (~${projPaidsForVerdict} paids/mo) is too low to justify onboarding cost. Watchlist — revisit if traffic grows or a direct deal reduces setup cost.`;
+
+  } else if (projSignupsForVerdict >= 50 && !meetsPayRate) {
+    // Scale is there but pay rate concern
+    verdict='SOFT LAUNCH'; verdictClass='soft'; icon='◈'; title='Test with Pay Rate Gate';
+    summary=`${partnerName} has scale potential (~${projSignupsForVerdict} signups/mo) but predicted pay rate is low (~${predictedPayRate}%). Test with a 60-day gate at 25% pay rate minimum. Try alternate LPs before passing.`;
+
+  } else {
+    verdict='PASS'; verdictClass='pass'; icon='✕'; title='Pass — Insufficient Volume';
+    summary=`${partnerName} is projected at ~${projPaidsForVerdict} paids/month — below the threshold where onboarding cost is justified. Pass for now.`;
+  }
+
+  // ── KNOWN PARTNER OVERRIDE ──
+  if (_currentKnownPartnerKey && KNOWN_PARTNER_VERDICTS[_currentKnownPartnerKey]) {
+    const kv = KNOWN_PARTNER_VERDICTS[_currentKnownPartnerKey];
+    verdict      = kv.verdict;
+    verdictClass = kv.verdictClass;
+    icon         = kv.icon;
+    title        = kv.title;
+    summary      = kv.summary;
+  }
+
+  // ── CLOSEST MATCH (new partners only) ──
+  const closestMatch = _currentKnownPartnerKey ? null : findClosestMatch(trafficType, siteType, monthlyVisits, trafficTypes);
+  const flags = [];
+  if (trafficType==='sem_rankings') flags.push({color:'red',text:'SEM Rankings on Default LP = 0% pay rate (141 signups, zero paid in L90). Always route to Reviews LP.'});
+  if (trafficType==='sem_rankings'&&recoLP==='reviews') flags.push({color:'green',text:'SEM Rankings + Reviews LP = 76% pay rate in your L90 data. Above company average. Best confirmed combo.'});
+  if (trafficType==='publisher_email') flags.push({color:'green',text:'Publisher Email drove 96K clicks in L90. Collections LP = 48% at scale. Late Payments LP = 106%. Right LP is everything here.'});
+  if (trafficType==='loan_decline') flags.push({color:'amber',text:'Loan Decline: Suitability Q1 = 15% pay rate. Default = 64%. Skip Suitability for this traffic type.'});
+  if (siteType==='comparison_review'||trafficType==='sem_rankings') flags.push({color:'green',text:'Comparison/review profile — your highest pay rate traffic category.'});
+  if (contentSpec>=3) flags.push({color:'green',text:'Credit repair is a primary topic — strong content alignment.'});
+  if (userIntent>=3) flags.push({color:'green',text:'Users appear actively solution-seeking — high conversion intent.'});
+  if (distressSignals.length>=2) flags.push({color:'green',text:'Multiple audience distress signals — users managing active credit problems, not aspirationally browsing.'});
+  flags.push({color:'amber',text:'L90 data shows Reg→Checkout drops to 21–46% across all traffic types — a product/UX issue affecting all partners. Factor into revenue projections.'});
+  if (siteType==='personal_finance_broad') flags.push({color:'amber',text:'Broad personal finance — users may be educating, not shopping. Even with best LP, pay rate likely below company avg.'});
+  if (monthlyVisits<10000&&monthlyVisits>0) flags.push({color:'red',text:'Traffic volume too low to drive material signups. Onboarding cost not justified.'});
+  if (siteType==='coupon_deals') flags.push({color:'red',text:'Coupon/deals traffic — worst pay rate profile in financial services affiliate.'});
+  if (!trafficType) flags.push({color:'red',text:'Traffic Type not selected — LP recommendation and funnel benchmarks are unavailable. Required field.'});
+  const uniqueTrafficTypes = [...new Set(trafficTypes)];
+  if (uniqueTrafficTypes.length > 1) flags.push({color:'amber',text:`Multiple traffic types selected (${uniqueTrafficTypes.join(', ')}). LP recommendation is based on primary type (${trafficType}). Confirm the dominant traffic source before scoring.`});
+
+  // ── RENDER ──
+  document.getElementById('verdictBanner').className='verdict-banner '+verdictClass;
+  document.getElementById('verdictIcon').textContent=icon;
+  document.getElementById('verdictLabel').textContent='Verdict: '+verdict;
+  document.getElementById('verdictTitle').textContent=title;
+  document.getElementById('verdictSummary').textContent=summary;
+
+  if (lpBench) {
+    document.getElementById('lpRecoName').textContent=lpBench.label;
+    document.getElementById('lpRecoRationale').textContent=recoLPData.rationale;
+    document.getElementById('lpBenchmarkPayRate').textContent=pct(lpBench.payRate);
+    document.getElementById('lpBenchmarkReg2Co').textContent=pct(lpBench.r2co);
+    document.getElementById('lpBenchmarkCo2Bill').textContent=pct(lpBench.co2bill);
+    document.getElementById('lpAlternatives').innerHTML='<strong style="color:var(--text);font-size:12px;">Alternatives & Watch Items:</strong> '+recoLPData.alternatives;
+  }
+
+  document.getElementById('scaleScore').textContent=scalePoints;
+  document.getElementById('scaleBar').style.width=scalePoints+'%';
+  document.getElementById('scaleDesc').textContent=scalePoints>=70?'Strong volume — could be a material publisher.':scalePoints>=45?'Moderate — worth a test, not a major bet.':'Low volume — signups will be immaterial.';
+
+  const prColor=prPoints>=68?'var(--green)':prPoints>=52?'var(--amber)':'var(--red)';
+  document.getElementById('payRateScore').textContent=prPoints;
+  document.getElementById('payRateScore').style.color=prColor;
+  document.getElementById('payRateBar').style.width=prPoints+'%';
+  document.getElementById('payRateBar').style.background=prColor;
+  document.getElementById('payRateDesc').textContent='Predicted ~'+predictedPayRate+'% using '+(lpBench?.label||'recommended LP')+'. Channel avg: 40%.';
+
+  document.getElementById('projVisits').textContent=monthlyVisits?fmt(relevantVisits):'—';
+  document.getElementById('projVisitsRange').textContent=monthlyVisits?'of '+fmt(monthlyVisits)+' total':'Enter traffic above';
+  document.getElementById('projLeads').textContent=monthlyVisits?fmt(projSignups):'—';
+  document.getElementById('projLeadsRange').textContent=monthlyVisits?'via funnel ↓':'';
+  document.getElementById('projPaid').textContent=monthlyVisits?fmt(projPaid):'—';
+  document.getElementById('projPaidRange').textContent=monthlyVisits?'~'+predictedPayRate+'% of signups':'';
+  document.getElementById('projPayRate').textContent='~'+predictedPayRate+'%';
+  document.getElementById('projPayRateRange').textContent='Channel avg 40% | Min 25%';
+
+  if (monthlyVisits) {
+    const steps=[
+      {label:'Clicks',         val:fmt(relevantVisits),    note:null},
+      {label:'Leads',          val:fmt(projLeads),         note:projLeads&&relevantVisits?Math.round(projLeads/relevantVisits*100)+'%':null},
+      {label:'Registrations',  val:fmt(projRegistrations), note:projLeads?Math.round(projRegistrations/Math.max(projLeads,1)*100)+'%':null},
+      {label:'Checkout',       val:fmt(projCheckouts),     note:pct(r2co)},
+      {label:'Billing',        val:fmt(projBillings),      note:pct(co2bill)},
+      {label:'Paid',           val:fmt(projPaid),          note:'~'+predictedPayRate+'%'},
+    ];
+    document.getElementById('funnelSteps').innerHTML=steps.map((s,i)=>`
+      <div style="display:flex;align-items:center;">
+        <div style="text-align:center;padding:10px 14px;background:rgba(13,27,42,0.6);border:1px solid var(--border);border-radius:7px;min-width:88px;">
+          <div style="font-family:'DM Mono',monospace;font-size:14px;color:#fff;font-weight:500;">${s.val}</div>
+          <div style="font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.07em;margin-top:2px;">${s.label}</div>
+          ${s.note?`<div style="font-size:10px;color:var(--gold);margin-top:1px;font-family:'DM Mono',monospace;">${s.note}</div>`:''}
+        </div>
+        ${i<steps.length-1?'<div style="color:var(--border);font-size:20px;padding:0 3px;">›</div>':''}
+      </div>`).join('');
+    document.getElementById('funnelNote').textContent='Rates sourced from your L90 '+(trafficType||'').replace(/_/g,' ')+' + '+(lpBench?.label||'recommended LP')+' benchmark. Projections are estimates dependent on placement, creative, and list quality.';
+  } else {
+    document.getElementById('funnelSteps').innerHTML='<div style="font-size:13px;color:var(--text-dim);">Enter monthly traffic in Section 02 to see full funnel projections.</div>';
+    document.getElementById('funnelNote').textContent='';
+  }
+
+  document.getElementById('flagsList').innerHTML=flags.map(f=>`<div class="flag-item"><div class="flag-dot ${f.color}"></div><span>${f.text}</span></div>`).join('');
+
+  renderClosestMatch(closestMatch, document.getElementById('closestMatchSection'));
+
+  const conditions=[];
+  if (verdict==='SOFT LAUNCH'||verdict==='GO') {
+    if (!trafficType) conditions.push('Select Traffic Type — LP recommendation and all funnel benchmarks depend on this');
+    conditions.push(`Projected ~${projPaidsForVerdict} paids/mo (~$${Math.round(projPaidsForVerdict*600/1000)}K/mo at $600 LTV) — that's ~${Math.round(projPaidsForVerdict/375*100)}% of current channel volume`);
+    if (verdict==='SOFT LAUNCH') conditions.push('60-day review gate: confirm pay rate ≥25% and paids/mo trending toward target before scaling');
+    if (verdict==='SOFT LAUNCH') conditions.push('Start single placement — prove volume before full onboarding investment');
+    if (complianceRisk==='medium') conditions.push('Legal review required — flag guarantee language, specific result claims, or missing CROA disclosures');
+    if (promotesCompetitors==='yes_alongside') conditions.push('Negotiate placement rank — position on comparison page directly affects traffic quality');
+    if (emailTypes.includes(trafficType)) conditions.push('Email: test subject line and list segment before full send — L90 shows pay rate varies significantly by list type');
+  }
+  if (conditions.length>0) {
+    document.getElementById('conditionsBox').style.display='block';
+    document.getElementById('conditionsText').innerHTML=conditions.map(c=>'• '+c).join('<br>');
+  } else {
+    document.getElementById('conditionsBox').style.display='none';
+  }
+
+  document.getElementById('swPanel').style.display='none';
+  document.getElementById('scoreForm').style.display='none';
+  document.getElementById('results').style.display='block';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function resetForm() {
+  _currentKnownPartnerKey = null;
+  _pdfSignals = {};
+
+  // ── Reset SW upload zone to initial drop state ──
+  const errDiv = document.getElementById('swErrorState');
+  if (errDiv) errDiv.style.display = 'none';
+  document.getElementById('swUploadZone').style.display = 'block';
+  document.getElementById('swParsingStatus').style.display = 'none';
+  document.getElementById('swParsedPreview').style.display = 'none';
+  document.getElementById('swManualEntry').style.display = 'none';
+  document.getElementById('swUnparsedNote').style.display = 'none';
+  document.getElementById('swPdfInput').value = '';
+
+  // Clear source labels
+  ['sw_visits_src','sw_rank_src','sw_us_src','sw_trend_src','sw_ref_src','sw_traffictype_src']
+    .forEach(id => { const el=document.getElementById(id); if(el) el.textContent=''; });
+
+  // ── Clear all SW fields ──
+  ['sw_visits','sw_rank','sw_us'].forEach(id => {
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  ['sw_trend','sw_ref_industry','sw_outgoing','sw_creditkw','sw_intent'].forEach(id => {
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+
+  // ── Clear main form fields ──
+  ['partnerName','domain','monthlyVisits','domainAuth','creditKeywords','siteNotes'].forEach(id => {
+    const el=document.getElementById(id); if(el) el.value='';
+  });
+  ['financePercent','usTraffic'].forEach(id => {
+    const el=document.getElementById(id);
+    if(el) { el.value=el.defaultValue||50; }
+  });
+  const fpv=document.getElementById('financePercentVal'); if(fpv) fpv.textContent='50%';
+  const utv=document.getElementById('usTrafficVal'); if(utv) utv.textContent='50%';
+
+  // ── Clear all radio/checkbox groups ──
+  document.querySelectorAll('input[type="radio"]').forEach(r => r.checked=false);
+  document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked=false);
+  document.querySelectorAll('select').forEach(s => s.selectedIndex=0);
+
+  // ── Clear traffic type preview checkboxes ──
+  document.querySelectorAll('.trafficTypeCheck').forEach(cb => cb.checked=false);
+
+  // ── Clear Section 03 inferred note ──
+  document.getElementById('sec03InferredNote').style.display='none';
+  document.getElementById('sec03InferredNoteText').textContent='';
+
+  // ── Show form, hide results ──
+  document.getElementById('swPanel').style.display='block';
+  document.getElementById('scoreForm').style.display='block';
+  document.getElementById('results').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
